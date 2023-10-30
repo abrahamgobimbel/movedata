@@ -1,2 +1,5 @@
 *.pyc
 __pycache__/
+__pycache__/db_materi.cpython-311.pyc
+__pycache__/function.cpython-311.pyc
+__pycache__/functionsql.cpython-311.pyc
