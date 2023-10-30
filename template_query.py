@@ -1,6 +1,7 @@
 import function
 import os
 import functionsql
+import function_table
 import datetime
 
 
@@ -15,20 +16,7 @@ def print_data(data_front) :
 
 clear_terminal()
 
-#DATABASE AMBIL DATA
-nama_database = function.nama_database()
-o_nama_database = f"Nama database postgre : {nama_database}"
-data_front.append(o_nama_database)
-if len(o_nama_database) > maxlen : 
-    maxlen = len(o_nama_database)
-
-clear_terminal()
-
 #NAMA TABLE SUMBER
-print("="*maxlen)
-data = print_data(data_front)
-print('\n'.join(data))
-print("="*maxlen+"\n")
 sumber = function.nama_table_sumber()
 o_sumber = f"Nama table sql : {sumber}" 
 data_front.append(o_sumber)
@@ -37,12 +25,25 @@ if len(o_sumber) > maxlen :
 
 clear_terminal()
 
+#DATABASE AMBIL DATA
+print("="*maxlen)
+data = print_data(data_front)
+print('\n'.join(data))
+print("="*maxlen+"\n")
+nama_database = function.nama_database()
+o_nama_database = f"Nama database postgre : {nama_database}"
+data_front.append(o_nama_database)
+if len(o_nama_database) > maxlen : 
+    maxlen = len(o_nama_database)
+
+clear_terminal()
+
 #NAMA TABLE TUJUAN
 print("="*maxlen)
 data = print_data(data_front)
 print('\n'.join(data))
 print("="*maxlen+"\n")
-nama_table = function.nama_table_postgre()
+nama_table = function.nama_table_postgre(nama_database)
 o_nama_table = f"Nama table postgre : {nama_table}"
 data_front.append(o_nama_table)
 if len(o_nama_table) > maxlen : 
@@ -55,8 +56,8 @@ print("="*maxlen)
 data = print_data(data_front)
 print('\n'.join(data))
 print("="*maxlen+"\n")
-jenis_table = function.jenis_table(nama_table)
-o_jenis_table = f"Jenis tabel : {jenis_table}"
+jenis_table = function_table.jenis_table(nama_database,nama_table)
+o_jenis_table = f"Jenis tabel {nama_table} : {jenis_table}"
 data_front.append(o_jenis_table)
 if len(o_jenis_table) > maxlen : 
     maxlen = len(o_jenis_table)
@@ -67,7 +68,7 @@ print("="*maxlen)
 data = print_data(data_front)
 print('\n'.join(data))
 print("="*maxlen+"\n")
-primary_key = function.primary_key(nama_table)
+primary_key = function_table.primary_key(nama_table)
 o_primary_key = f"Primary key table {nama_table} : {primary_key}"
 data_front.append(o_primary_key)
 if len(o_primary_key) > maxlen : 
@@ -79,7 +80,7 @@ print("="*maxlen)
 data = print_data(data_front)
 print('\n'.join(data))
 print("="*maxlen+"\n")
-kolom_table = function.kolom_table(nama_table)
+kolom_table = function_table.kolom_table(nama_table)
 o_kolom_table = f"Kolom dari {nama_table} : {kolom_table}"
 data_front.append(o_kolom_table)
 if len(o_kolom_table) > maxlen : 
@@ -91,7 +92,7 @@ print("="*maxlen)
 data = print_data(data_front)
 print('\n'.join(data))
 print("="*maxlen+"\n")
-result = function.foreign_key(nama_table, kolom_table)
+result = function_table.foreign_key(nama_table)
 foreign_column = result[0]
 foreign_table = result[1]
 o_foreign_column = f"foreign_column dari {nama_table} : {foreign_column}"
@@ -109,7 +110,7 @@ print("="*maxlen)
 data = print_data(data_front)
 print('\n'.join(data))
 print("="*maxlen+"\n")
-unique_key = function.unique_key(nama_table, kolom_table)
+unique_key = function_table.unique_key(nama_table)
 o_unique_key = f"unique_key dari {nama_table} : {unique_key}"
 data_front.append(o_unique_key)
 if len(o_unique_key) > maxlen : 
@@ -217,7 +218,9 @@ elif jenis_table == 'master' :
         for i in range (len(foreign_column)) :
             sql_statements.append(f"ALTER TABLE {nama_table} ADD CONSTRAINT {nama_table}_{foreign_column[i]}_fkey FOREIGN KEY ({foreign_column[i]})  REFERENCES {foreign_table[i]} ({foreign_column[i]});" ) 
 new_sql_file = f'{sumber}.sql'
+
 with open(new_sql_file, 'w', encoding='utf-8') as new_file:
-    new_file.write('\n'.join(sql_statements))
+    modified_statements = [statement.replace("\\", "").replace("\\'", "").replace("'NULL'","NULL") for statement in sql_statements]
+    new_file.write('\n'.join(modified_statements))
 print(f"File done : {new_sql_file}")
 
