@@ -1,7 +1,32 @@
 import mysql.connector
 import datetime
-import db_materi  # Ensure db_materi contains the necessary query_select function
-import db_kbm  # Ensure db_kbm contains the necessary query_select function
+import db_go 
+import db_kbm 
+import db_materi 
+import db_materi_teaser 
+import db_produk 
+import db_produk_teaser  
+import db_ptn 
+import db_report_siswa_empati_mandiri 
+import db_report_siswa_empati_wajib
+import db_report_siswa_goa 
+import db_report_siswa_irt 
+import db_report_siswa_kuis 
+import db_report_siswa_lateks  
+import db_report_siswa_paket_intensif 
+import db_report_siswa_pendalaman_materi 
+import db_report_siswa_peringkat  
+import db_report_siswa_presensi 
+import db_report_siswa_racing 
+import db_report_siswa_soref 
+import db_report_siswa_tobk  
+import db_report_siswa_vak 
+import db_report_siswa_koding 
+import db_report_tamu 
+import db_sekolah 
+import db_user 
+import db_user_lembaga 
+import db_user_tamu 
 
 def format_datetime(dt):
     return dt.strftime("%Y-%m-%d %H:%M:%S")

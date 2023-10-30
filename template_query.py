@@ -220,7 +220,7 @@ elif jenis_table == 'master' :
 new_sql_file = f'{sumber}.sql'
 
 with open(new_sql_file, 'w', encoding='utf-8') as new_file:
-    modified_statements = [statement.replace("\\", "").replace("\\'", "").replace("'NULL'","NULL") for statement in sql_statements]
+    modified_statements = [statement.replace("\\'", "").replace("\\", "").replace("'NULL'","NULL") for statement in sql_statements]
     new_file.write('\n'.join(modified_statements))
 print(f"File done : {new_sql_file}")
 
