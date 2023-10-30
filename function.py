@@ -219,13 +219,13 @@ def unique_key(nama_table, kolom_table) :
                 else : 
                     print("input harus y atau n")
                     choice = False
-            pilihan = input("Apakah masih ada unique_key lain (y/n): ")
+            while pilihan != 'y' and pilihan != 'n' :
+                pilihan = input("Apakah masih ada unique_key lain (y|n): ")
+                if (pilihan != 'y' and pilihan != 'n') :
+                    print("input harus y (yes) or n (no)")
             if pilihan.lower() == 'y':
                 pilihan = False
             elif pilihan.lower() == 'n':
-                pilihan = True
-            else : 
-                print("input harus y dan n")
                 pilihan = True
     return unique_key
 

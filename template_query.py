@@ -125,15 +125,18 @@ print("="*maxlen+"\n")
 sql_statements = []
 nama_table_baru = f"{nama_table}_baru"   
 
-data_sql = functionsql.data_sql(nama_database, sumber, primary_key)
+data_sql = functionsql.data_sql(nama_database, sumber)
 
 values = []
 for array in data_sql:
     new_tuple = tuple(function.format_datetime(val) for val in array)
     values.append(new_tuple)
 modified_values = [(t[0], t[1].replace("'", ''), t[2]) for t in values]
+if len(values) > 10 :
+    batch_size = round(len(values)/10)
+else : 
+    batch_size = 1
 
-batch_size = round(len(values)/10)
 
 
   

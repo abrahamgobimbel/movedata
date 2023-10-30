@@ -1,11 +1,12 @@
 import mysql.connector
 import datetime
 import db_materi
+import db_kbm
 
 def format_datetime(dt):
     return dt.strftime("%Y-%m-%d %H:%M:%S")
 
-def data_sql(nama_database, sumber, primary_key):
+def data_sql(nama_database, sumber):
     
     connection = mysql.connector.connect(
         host     = "localhost",
@@ -16,10 +17,10 @@ def data_sql(nama_database, sumber, primary_key):
     cursor = connection.cursor()
 
     if nama_database == 'db_materi' :
-        query = db_materi.query_select(sumber, primary_key)
+        query = db_materi.query_select(sumber)
     elif nama_database == 'db_kbm' :
-        query = db_kbm.query_select(sumber, primary_key)
-        
+        query = db_kbm.query_select(sumber)
+    
     cursor.execute(query)
     results = cursor.fetchall()
     
