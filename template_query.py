@@ -206,7 +206,7 @@ elif jenis_table == 'master' :
             batch_sql_query.append(f"{value}")
         batch_sql_query = ', '.join(batch_sql_query)
         sql_query = f"SELECT DISTINCT {primary_key} FROM {nama_table}"
-        sql_query_ = f"INSERT INTO {nama_table} ({', '.join(kolom_table)}) VALUES {batch_sql_query} ON CONFLICT ({primary_key}) DO NOTHING;"
+        sql_query_ = f"INSERT INTO {nama_table} ({', '.join(kolom_table)}) VALUES {batch_sql_query} ON CONFLICT ({primary_key}) DO UPDATE SET {update_statement};"
         sql_statements.append(sql_query_)
     sql_statements.append(f"GRANT INSERT, UPDATE, TRIGGER, TRUNCATE, SELECT, REFERENCES, DELETE ON TABLE {nama_table} TO developer;")
     if len(foreign_column) > 0 :
