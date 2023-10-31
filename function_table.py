@@ -178,6 +178,7 @@ def primary_key(nama_table):
         #db_materi
         't_bab' : 'c_kode_bab',
         't_buku' : 'c_id_buku',
+        't_buku_produk' : 'c_id_buku_produk',
         #db_report_siswa_goa
         't_target_lulus_goa' : 'c_id_target_lulus',
         
@@ -202,6 +203,7 @@ def kolom_table(nama_table):
         't_bab' : ['c_kode_bab','c_nama_bab','c_upline','c_peluang','c_status','c_updater','c_created_at','c_last_update'],
         't_buku' : ['c_id_buku','c_nama_buku','c_deskripsi','c_semester','c_id_sekolah_kelas','c_id_kurikulum','c_tahun_ajaran',
                     'c_jenis_buku','c_id_kelompok_ujian','c_updater','c_created_at','c_last_update'],
+        't_buku_produk' : ['c_id_buku','c_id_produk','c_updater','c_last_update'],
         #db_report_siswa_goa
         't_target_lulus_goa' : ['c_id_tingkat_kelas','c_tahun_ajaran','c_id_kelompok_ujian','c_minimal_benar','c_updater','c_created_at',
                                 'c_last_update',]
@@ -216,7 +218,7 @@ def foreign_key(nama_table):
         #db_kbm
         't_isi_bah': ['c_id_bah'],
         #db_materi
-        't_bab' : [],
+        't_bab' : ['c_id_buku'],
         #db_report_siswa_goa
         't_target_lulus_goa' : [],
     }
@@ -228,7 +230,7 @@ def foreign_key(nama_table):
         't_daftar_kegiatan_kbm' : [],
         't_isi_bah': ['t_bah'],
         #db_materi 
-        't_bab' : [],
+        't_bab' : ['t_buku'],
         #db_report_siswa_goa
         't_target_lulus_goa' : [],
     }
@@ -243,6 +245,8 @@ def unique_key(nama_table):
         't_isi_bah': [['c_id_bah', 'c_kode_bab']],
         #db_materi
         't_bab': [],
+        't_buku' : [],
+        't_buku_produk' : [['c_id_buku', 'c_id_produk']],
         #db_report_siswa_goa
         't_target_lulus_goa' : [['c_id_tingkat_kelas','c_tahun_ajaran','c_id_kelompok_ujian']],
     }

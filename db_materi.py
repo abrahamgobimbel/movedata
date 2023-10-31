@@ -33,4 +33,6 @@ def query_select(sumber) :
                 f"(SELECT DISTINCT c_kodebuku FROM t_buku) kodebuku\n"
                 f"ON kodebuku.c_kodebuku = a.c_kodebuku;"
                 )
+    elif sumber == 't_produkbuku' :
+        query = ("SELECT * FROM db_materi.t_produkbuku;")
     return query
