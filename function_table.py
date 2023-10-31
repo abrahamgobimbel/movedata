@@ -101,6 +101,8 @@ def primary_key(nama_table):
         't_bah': 'c_id_bah',
         't_daftar_kegiatan_kbm' : 'c_id_kegiatan',
         't_isi_bah': 'c_id',
+        #db_report_siswa_goa
+        't_target_lulus_goa' : ''
         
     }
 
