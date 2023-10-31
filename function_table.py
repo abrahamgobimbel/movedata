@@ -12,9 +12,9 @@ def nama_table(database_name):
                              't_teori_bab_teaser','t_teori_bab_video_teaser','t_video_soal_teaser','t_video_teaser','t_video_teori_teaser',
                              't_wacana_soal_teaser','t_wacana_teaser'],
         'db_produk' : ['t_bundling', 't_isi_produk_mix', 't_isi_tob', 't_jenis_kelas', 't_jenis_produk', 't_paket_dan_bundel', 't_paket_soal',
-                       't_produk', 't-produk_mix', 't_produk_tob', 't_tob'],
+                       't_produk', 't_produk_mix', 't_produk_tob', 't_tob'],
         'db_produk_teaser' : ['t_isi_tob_teaser', 't_jenis_kelas_teaser', 't_jenis_produk_teaser', 't_paket_dan_bundel_teaser', 't_paket_soal_teaser', 
-                              't-produk_teaser', 't_produk_tob_teaser', 't_role_buku_teaser'. 't_role_tob_teaser', 't_tob_teaser'],
+                              't_produk_teaser', 't_produk_tob_teaser', 't_role_buku_teaser', 't_role_tob_teaser', 't_tob_teaser'],
         'db_ptn' : ['t_jurusan', 't_jurusan_deskripsi', 't_kelompok_jurusan', 't_perguruan_tinggi', 't_rumpun_jurusan'],
         'db_report_siswa_empati_mandiri' : ['t_hasil_jawaban_1', 't_hasil_jawaban_10', 't_hasil_jawaban_11', 't_hasil_jawaban_12', 't_hasil_jawaban_13', 't_hasil_jawaban_2',
                                             't_hasil_jawaban_3', 't_hasil_jawaban_4', 't_hasil_jawaban_5', 't_hasil_jawaban_6', 't_hasil_jawaban_7', 't_hasil_jawaban_8',
@@ -69,10 +69,18 @@ def nama_table(database_name):
 def jenis_table(nama_database, nama_table):
     master_tables = {
         'db_go': ['t_berita', 't_bidang_go', 't_carousel', 't_daftar_kegiatan', 't_gedung', 't_gokomar', 't_kota', 't_outlet', 't_daftar_kegiatan_kbm'],
-        'db_kbm': ['t_bah'],
+        'db_kbm': ['t_bah', 't_cluster_pengajar', 't_daftar_kegiatan_kbm','t_feedback_pengajaran', 't_feedback_pengajaran_lembaga', 't_kelas', 
+                    't_permintaan_tst',  't_realisasi_kerja', 't_realisasi_kerja_kbm', 't_rencana_kerja', 't_rencana_kerja_kbm', 't_feedback_question'],
+        'db_materi': ['t_bab','t_buku','t_bundel_soal','t_soal','t_teori_bab','t_video_soal','t_video_teori','t_wacana'],
+        'db_materi_teaser': ['t_bab_teaser','t_buku_teaser','t_bundel_soal_teaser', 't_soal_teaser','t_teori_bab_teaser','t_video_soal_teaser',
+                             't_video_teaser','t_video_teori_teaser', 't_wacana_teaser'],
     }
     penghubung_tables = {
-        'db_kbm': ['t_isi_bah'],
+        'db_kbm': ['t_isi_bah', 't_bah_kelas', 't_kelas_siswa', 't_kelas_siswa_lembaga', 't_realisasi_kelas'],
+        'db_materi': ['t_buku_produk','t_isi_buku','t_isi_bundel_soal','t_mapel_bab','t_paket_dan_bundel_materi', 't_soal_bab','t_soal_video_soal',
+                      't_teori_bab_video',  't_wacana_soal'],
+        'db_materi_teaser' : ['t_buku_produk_teaser','t_isi_buku_teaser', 't_isi_bundel_soal_teaser','t_mapel_bab_teaser','t_soal_bab_teaser','t_soal_video_soal_teaser',
+                              't_teori_bab_video_teaser','t_wacana_soal_teaser']
     }
 
     if nama_table in master_tables.get(nama_database, []):
