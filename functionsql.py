@@ -53,10 +53,14 @@ def data_sql(nama_database, sumber):
         
         cursor.execute(query)
         results = cursor.fetchall()
+        formatted_rows = []
         data_sql = []
         for row in results:
             formatted_row = [format_datetime(value) if isinstance(value, datetime.datetime) else value for value in row]
-            data_sql.append(formatted_row)
+            formatted_rows.append(formatted_row)
+        for row in formatted_rows:
+            formatted = [value.replace("'", "-") if isinstance(value, str) else value for value in row]
+            data_sql.append(formatted)
         return data_sql
 
     except mysql.connector.Error as err:
