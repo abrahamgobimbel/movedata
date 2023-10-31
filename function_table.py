@@ -24,7 +24,7 @@ def nama_table(database_name):
                                         't_hasil_jawaban_9',  't_jawaban_siswa', 't_peserta_to', 't_syarat_empati'],
         'db_report_siswa_goa' : ['t_hasil_jawaban_1', 't_hasil_jawaban_10', 't_hasil_jawaban_11', 't_hasil_jawaban_12', 't_hasil_jawaban_13', 't_hasil_jawaban_2',
                                 't_hasil_jawaban_3', 't_hasil_jawaban_4', 't_hasil_jawaban_5', 't_hasil_jawaban_6', 't_hasil_jawaban_7', 't_hasil_jawaban_8',
-                                't_hasil_jawaban_9', 't_jawaban_siswa','t_peserta_to'],
+                                't_hasil_jawaban_9', 't_jawaban_siswa','t_peserta_to', 't_target_lulus_goa'],
         'db_report_siswa_irt' : ['t_hasil_irt', 't_irt_nilai_to', 't_nilai_irt_tobk'],
         'db_report_siswa_kuis' : ['t_hasil_jawaban_1', 't_hasil_jawaban_10', 't_hasil_jawaban_11', 't_hasil_jawaban_12', 't_hasil_jawaban_13', 't_hasil_jawaban_2',
                                 't_hasil_jawaban_3', 't_hasil_jawaban_4', 't_hasil_jawaban_5', 't_hasil_jawaban_6', 't_hasil_jawaban_7', 't_hasil_jawaban_8',
