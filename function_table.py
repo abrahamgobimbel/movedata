@@ -173,6 +173,8 @@ def primary_key(nama_table):
         't_bah': 'c_id_bah',
         't_daftar_kegiatan_kbm' : 'c_id_kegiatan',
         't_isi_bah': 'c_id',
+        #db_materi
+        't_bab' : 'c_kode_bab'
         #db_report_siswa_goa
         't_target_lulus_goa' : 'c_id_target_lulus'
         
@@ -193,7 +195,8 @@ def kolom_table(nama_table):
                                    'c_kr','c_pf','c_ph','c_pk','c_pengali','c_is_relatif','c_pengali_sd','c_waktu_maksimal',
                                    'c_waktu_minimal','c_id_jenis_petugas','c_dasar_pengajian','c_updater','c_created_at','c_last_update'],
         't_isi_bah': ['c_id', 'c_id_bah', 'c_kode_bab', 'c_pertemuan', 'c_updater', 'c_last_update'],
-        
+        #db_materi :
+        't_bab' : ['c_kode_bab','c_nama_bab','c_upline','c_peluang','c_status','c_updater','c_created_at','c_last_update']
         #db_report_siswa_goa
         't_target_lulus_goa' : ['c_id_tingkat_kelas','c_tahun_ajaran','c_id_kelompok_ujian','c_minimal_benar','c_updater','c_created_at',
                                 'c_last_update',]
