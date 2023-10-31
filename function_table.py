@@ -1,7 +1,7 @@
 def nama_table(database_name):
     table_names = {
-        'db_go': ['t_berita', 't_bidang_go', 't_carousel', 't_daftar_kegiatan', 't_gedung', 't_gokomar', 't_kota', 't_outlet', 't_daftar_kegiatan_kbm'],
-        'db_kbm': ['t_bah', 't_bah_kelas', 't_cluster_pengajar', 't_feedback_pengajaran', 't_feedback_pengajaran_lembaga', 't_isi_bah', 't_kelas', 
+        'db_go': ['t_berita', 't_bidang_go', 't_carousel', 't_gedung', 't_gokomar', 't_kota', 't_outlet', 't_daftar_kegiatan_kbm'],
+        'db_kbm': ['t_bah', 't_bah_kelas', 't_cluster_pengajar', 't_daftar_kegiatan_kbm','t_feedback_pengajaran', 't_feedback_pengajaran_lembaga', 't_isi_bah', 't_kelas', 
                    't_kelas_siswa', 't_kelas_siswa_lembaga', 't_permintaan_tst', 't_realisasi_kelas', 't_realisasi_kerja', 't_realisasi_kerja_kbm', 
                    't_rencana_kerja', 't_rencana_kerja_kbm', 't_feedback_question'],
         'db_materi' : ['t_bab','t_buku','t_buku_produk','t_bundel_soal','t_isi_buku','t_isi_bundel_soal','t_mapel_bab','t_paket_dan_bundel_materi',
@@ -61,7 +61,7 @@ def nama_table(database_name):
                         't_sekolah_kelas_kelompok_ujian', 't_sekolah_siswa', 't_sekolah_siswa_lembaga', 't_semester', 't_tahun_ajaran'],
         'db_user' : ['t_bookmark', 't_log_aktivitas', 't_mapel_pilihan_siswa', 't_orangtua', 't_orangtua_siswa', 't_pembayaran', 't_pilihan_ptn_siswa', 't_produk_aktif', 
                      't_produk_siswa', 't_siswa', 't_siswa_detail', 't_siswa_tata_tertib', 't_tata_tertib'],
-        'db_user_lembaga' : [],
+        'db_user_lembaga' : ['t_mapel_pilihan_siswa_lembaga', 't_orangtua_lembaga'],
         'db_user_tamu' : []
     }
     return table_names.get(database_name, [])
