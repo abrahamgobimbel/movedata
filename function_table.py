@@ -1,6 +1,6 @@
 def nama_table(database_name):
     table_names = {
-        'db_go': ['t_berita', 't_bidang_go', 't_carousel', 't_gedung', 't_gokomar', 't_kota', 't_outlet', 't_daftar_kegiatan_kbm'],
+        'db_go': ['t_berita', 't_bidang_go', 't_carousel', 't_gedung', 't_gokomar', 't_kota', 't_outlet'],
         'db_kbm': ['t_bah', 't_bah_kelas', 't_cluster_pengajar', 't_daftar_kegiatan_kbm','t_feedback_pengajaran', 't_feedback_pengajaran_lembaga', 't_isi_bah', 't_kelas', 
                    't_kelas_siswa', 't_kelas_siswa_lembaga', 't_permintaan_tst', 't_realisasi_kelas', 't_realisasi_kerja', 't_realisasi_kerja_kbm', 
                    't_rencana_kerja', 't_rencana_kerja_kbm', 't_feedback_question'],
