@@ -45,6 +45,8 @@ def data_sql(nama_database, sumber):
             query = db_materi.query_select(sumber)
         elif nama_database == 'db_kbm':
             query = db_kbm.query_select(sumber)
+        elif nama_database == 'db_go' :
+            query = db_go.query_select(sumber)
 
         cursor.execute(query)
         results = cursor.fetchall()
