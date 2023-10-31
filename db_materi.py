@@ -1,15 +1,17 @@
 def query_select(sumber) :
     if sumber == "t_bab" :
-        query = (f"SELECT c_kodebab,\n"
-                f"c_NamaBab,\n"
-                f"c_Upline,\n"
-                f"c_Peluang,\n"
-                f"c_Status,\n"
-                f"c_Updater,\n"
-                f"c_LastUpdate,\n"
+        query = (f"SELECT a.c_kodebab,\n"
+                f"a.c_NamaBab,\n"
+                f"a.c_Upline,\n"
+                f"a.c_Peluang,\n"
+                f"a.c_Status,\n"
+                f"a.c_Updater,\n"
+                f"a.c_LastUpdate,\n"
                 f"current_timestamp\n"
-                f"FROM db_materi.t_bab;"
-                f"JOIN (SELECT DISTINCT c_kodebab FROM t_bab) kodebab\n"
+                f"FROM\n"
+                f"db_materi.t_bab a\n"
+                f"JOIN\n"
+                f"(SELECT DISTINCT c_kodebab FROM t_bab) kodebab\n"
                 f"ON kodebab.c_kodebab = a.c_kodebab;"
                 )
     elif sumber == 't_buku' :
