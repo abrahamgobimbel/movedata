@@ -4,7 +4,6 @@ def query_select(sumber) :
     elif sumber == "t_cluster_pengajar_idpp" :
         query = f"SELECT * FROM {sumber} a JOIN (SELECT DISTINCT c_IdPengajar FROM {sumber}) idpengajar ON a.c_IdPengajar = idpengajar.c_IdPengajar;"
     elif sumber == 't_daftar_kegiatan_kbm' :
-        query =     if sumber == 't_daftar_kegiatan_kbm' :
         query = (f"SELECT row_number() OVER (ORDER BY c_id) AS row_num,\n"
                 f"c_Nama,\n"
                 f"JSON_UNQUOTE(c_Deskripsi->'$.c_DesSiswa') AS c_DesSiswa,\n"
@@ -26,5 +25,6 @@ def query_select(sumber) :
                 f"c_Updater\n"
                 f"FROM t_bankdata\n"
                 f"WHERE c_parents in('0202','0201')\n"
-                f"ORDER BY c_id;\n")
+                f"ORDER BY c_id;")
+        
     return query
