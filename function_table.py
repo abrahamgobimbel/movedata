@@ -135,7 +135,7 @@ def jenis_table(nama_database, nama_table):
         'db_ptn' : [],
         'db_report_siswa_empati_mandiri' : [],
         'db_report_siswa_empati_wajib' : [],
-        'db_report_siswa_goa' : [],
+        'db_report_siswa_goa' : ['t_target_lulus_goa'],
         'db_report_siswa_irt' : [],
         'db_report_siswa_kuis' : [],
         'db_report_siswa_lateks' : [],
@@ -169,10 +169,13 @@ def primary_key(nama_table):
         # db_go
         't_berita': 'c_id_berita',
         't_gokomar': 'c_id_komar',
-        't_daftar_kegiatan_kbm' : 'c_id_kegiatan',
         # db_kbm
         't_bah': 'c_id_bah',
+        't_daftar_kegiatan_kbm' : 'c_id_kegiatan',
         't_isi_bah': 'c_id',
+        #db_report_siswa_goa
+        't_target_lulus_goa' : 'c_id_target_lulus'
+        
     }
 
     return primary_keys.get(nama_table, None)
@@ -183,13 +186,17 @@ def kolom_table(nama_table):
                      'c_untuk', 'c_jenis', 'c_photo', 'c_jumlah_viewer', 'c_last_update', 'c_created_at'],
         't_gokomar': ['c_id_komar', 'c_nama_komar', 'c_id_kewilayahan', 'c_upline', 'c_id_kota', 'c_status', 'c_updater',
                       'c_last_update'],
-        't_daftar_kegiatan_kbm' : ['c_id_kegiatan','c_nama_kegiatan','c_deskripsi_siswa','c_deskripsi_petugas','c_deskripsi_pengajar',
-                                   'c_kr','c_pf','c_ph','c_pk','c_pengali','c_is_relatif','c_pengali_sd','c_waktu_maksimal',
-                                   'c_waktu_minimal','c_id_jenis_petugas','c_dasar_pengajian','c_updater','c_created_at','c_last_update'],
         #db_kbm
         't_bah' : ['c_id_bah', 'c_kode_bah', 'c_semester', 'c_tahun_ajaran', 'c_id_tingkat_kelas', 'c_id_kurikulum', 
                   'c_id_jenis_layanan', 'c_id_kelompok_ujian', 'c_jumlah_pertemuan', 'c_id_silabus', 'c_updater', 'c_last_update'],
+        't_daftar_kegiatan_kbm' : ['c_id_kegiatan','c_nama_kegiatan','c_deskripsi_siswa','c_deskripsi_petugas','c_deskripsi_pengajar',
+                                   'c_kr','c_pf','c_ph','c_pk','c_pengali','c_is_relatif','c_pengali_sd','c_waktu_maksimal',
+                                   'c_waktu_minimal','c_id_jenis_petugas','c_dasar_pengajian','c_updater','c_created_at','c_last_update'],
         't_isi_bah': ['c_id', 'c_id_bah', 'c_kode_bab', 'c_pertemuan', 'c_updater', 'c_last_update'],
+        
+        #db_report_siswa_goa
+        't_target_lulus_goa' : ['c_id_tingkat_kelas','c_tahun_ajaran','c_id_kelompok_ujian','c_minimal_benar','c_updater','c_created_at',
+                                'c_last_update',]
     }
 
     return kolom_tables.get(nama_table, [])
@@ -198,16 +205,20 @@ def foreign_key(nama_table):
     foreign_keys = {
         #db_go
         't_gokomar': ['c_id_kota'],
-        't_daftar_kegiatan_kbm' : [],
         #db_kbm
         't_isi_bah': ['c_id_bah'],
+        #db_report_siswa_goa
+        't_target_lulus_goa' : [],
     }
 
     foreign_tables = {
         #db_go
         't_gokomar': ['t_kota'],
         #db_kbm
+        't_daftar_kegiatan_kbm' : [],
         't_isi_bah': ['t_bah'],
+        #db_report_siswa_goa
+        't_target_lulus_goa' : [],
     }
 
     return foreign_keys.get(nama_table, []), foreign_tables.get(nama_table, [])
@@ -215,9 +226,11 @@ def foreign_key(nama_table):
 def unique_key(nama_table):
     unique_keys = {
         #db_go
-        't_daftar_kegiatan_kbm' : [],
         #db_kbm
+        't_daftar_kegiatan_kbm' : [],
         't_isi_bah': ['c_id_bah', 'c_kode_bab'],
+        #db_report_siswa_goa
+        't_target_lulus_goa' : [['c_id_tingkat_kelas','c_tahun_ajaran','c_id_kelompok_ujian']],
     }
 
     return unique_keys.get(nama_table, [])

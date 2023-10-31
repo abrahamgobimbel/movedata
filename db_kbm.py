@@ -4,12 +4,10 @@ def query_select(sumber) :
     elif sumber == "t_cluster_pengajar_idpp" :
         query = f"SELECT * FROM {sumber} a JOIN (SELECT DISTINCT c_IdPengajar FROM {sumber}) idpengajar ON a.c_IdPengajar = idpengajar.c_IdPengajar;"
     elif sumber == 't_daftar_kegiatan_kbm' :
-        query =     if sumber == 't_daftar_kegiatan_kbm' :
         query = (f"SELECT row_number() OVER (ORDER BY c_id) AS row_num,\n"
                 f"c_Nama,\n"
                 f"JSON_UNQUOTE(c_Deskripsi->'$.c_DesSiswa') AS c_DesSiswa,\n"
                 f"JSON_UNQUOTE(c_Deskripsi->'$.c_DesPetugas') AS c_DesPetugas,\n"
-                f"JSON_UNQUOTE(c_Deskripsi->'$.c_DesPengajar') AS c_DesPengajar,\n"
                 f"JSON_UNQUOTE(c_Deskripsi->'$.c_DesPengajar') AS c_DesPengajar,\n"
                 f"CASE WHEN JSON_UNQUOTE(c_Info->'$.c_KR') = 'true' THEN 1 WHEN JSON_UNQUOTE(c_Info->'$.c_KR') = 'false' THEN 0 END AS c_KR,\n"
                 f"CASE WHEN JSON_UNQUOTE(c_Info->'$.c_PF') = 'true' THEN 1 WHEN JSON_UNQUOTE(c_Info->'$.c_PF') = 'false' THEN 0 END AS c_PF,\n"
@@ -22,9 +20,11 @@ def query_select(sumber) :
                 f"JSON_UNQUOTE(c_Info->'$.c_WaktuMinimal') AS c_WaktuMinimal,\n"
                 f"JSON_UNQUOTE(c_Info->'$.c_IdJenisPetugas') AS c_IdJenisPetugas,\n"
                 f"JSON_UNQUOTE(c_Info->'$.c_DasarPenggajian') AS c_DasarPenggajian,\n"
-                f"c_Status,\n"
-                f"c_Updater\n"
+                f"c_Updater,\n"
+                f"c_lastupdate,\n"
+                f"current_timestamp\n"
                 f"FROM t_bankdata\n"
                 f"WHERE c_parents in('0202','0201')\n"
-                f"ORDER BY c_id;\n")
+                f"ORDER BY c_id;")
+        
     return query
