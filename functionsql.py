@@ -41,13 +41,16 @@ def data_sql(nama_database, sumber):
         )
         cursor = connection.cursor()
 
-        if nama_database == 'db_materi':
-            query = db_materi.query_select(sumber)
-        elif nama_database == 'db_kbm':
+        if nama_database == 'db_kbm':
             query = db_kbm.query_select(sumber)
         elif nama_database == 'db_go' :
             query = db_go.query_select(sumber)
+        elif nama_database == 'db_materi':
+            query = db_materi.query_select(sumber)
+        elif nama_database == 'db_report_siswa_goa' :
+            query = db_report_siswa_goa.query_select(sumber)
 
+        
         cursor.execute(query)
         results = cursor.fetchall()
         data_sql = []
