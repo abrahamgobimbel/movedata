@@ -61,8 +61,8 @@ def nama_table(database_name):
                         't_sekolah_kelas_kelompok_ujian', 't_sekolah_siswa', 't_sekolah_siswa_lembaga', 't_semester', 't_tahun_ajaran'],
         'db_user' : ['t_bookmark', 't_log_aktivitas', 't_mapel_pilihan_siswa', 't_orangtua', 't_orangtua_siswa', 't_pembayaran', 't_pilihan_ptn_siswa', 't_produk_aktif', 
                      't_produk_siswa', 't_siswa', 't_siswa_detail', 't_siswa_tata_tertib', 't_tata_tertib'],
-        'db_user_lembaga' : ['t_mapel_pilihan_siswa_lembaga', 't_orangtua_lembaga'],
-        'db_user_tamu' : []
+        'db_user_lembaga' : ['t_mapel_pilihan_siswa_lembaga', 't_orangtua_lembaga', 't_pilihan_ptn_siswa_lembaga', 't_produk_aktif_lembaga', 't_produk_lembaga', 't_user_lembaga', 't_user_lembaga_detail'],
+        'db_user_tamu' : ['t_tamu']
     }
     return table_names.get(database_name, [])
 
