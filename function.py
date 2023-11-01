@@ -1,21 +1,7 @@
 import datetime
 import function_database
 import function_table
-    
-def nama_table_sumber() :
-    pilihan = False
-    while not pilihan : 
-        sumber = input("Masukkan nama table sumber mysql, ex : t_isiprodukmix : ")
-        sumber = sumber.lower()
-        while pilihan != 'y' and pilihan != 'n' :
-            pilihan = input(f"Nama table mysql : {sumber} | Apakah nama tabel mysql sudah sesuai (y|n) : ")
-            if (pilihan != 'y' and pilihan != 'n') :
-                print("input harus y (yes) or n (no)")
-        if pilihan.lower() == 'y' :
-            pilihan = True
-        elif pilihan.lower() == 'n' :
-            pilihan = False
-    return sumber
+
 
 def nama_database() :
     pilihan = False

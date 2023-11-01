@@ -16,15 +16,6 @@ def print_data(data_front) :
 
 clear_terminal()
 
-#NAMA TABLE SUMBER
-sumber = function.nama_table_sumber()
-o_sumber = f"Nama table sql : {sumber}" 
-data_front.append(o_sumber)
-if len(o_sumber) > maxlen : 
-    maxlen = len(o_sumber)
-
-clear_terminal()
-
 #DATABASE AMBIL DATA
 print("="*maxlen)
 data = print_data(data_front)
@@ -126,7 +117,7 @@ print("="*maxlen+"\n")
 sql_statements = []
 nama_table_baru = f"{nama_table}_baru"   
 
-data_sql = functionsql.data_sql(nama_database, sumber)
+data_sql = functionsql.data_sql(nama_database, nama_table)
 
 values = []
 for array in data_sql:

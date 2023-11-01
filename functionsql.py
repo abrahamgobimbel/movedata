@@ -31,7 +31,7 @@ import db_user_tamu
 def format_datetime(dt):
     return dt.strftime("%Y-%m-%d %H:%M:%S")
 
-def data_sql(nama_database, sumber):
+def data_sql(nama_database, nama_table):
     try:
         connection = mysql.connector.connect(
             host="localhost",
@@ -42,13 +42,13 @@ def data_sql(nama_database, sumber):
         cursor = connection.cursor()
 
         if nama_database == 'db_kbm':
-            query = db_kbm.query_select(sumber)
+            query = db_kbm.query_select(nama_table)
         elif nama_database == 'db_go' :
-            query = db_go.query_select(sumber)
+            query = db_go.query_select(nama_table)
         elif nama_database == 'db_materi':
-            query = db_materi.query_select(sumber)
+            query = db_materi.query_select(nama_table)
         elif nama_database == 'db_report_siswa_goa' :
-            query = db_report_siswa_goa.query_select(sumber)
+            query = db_report_siswa_goa.query_select(nama_table)
 
         
         cursor.execute(query)

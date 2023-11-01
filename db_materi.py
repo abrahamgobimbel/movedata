@@ -1,5 +1,5 @@
-def query_select(sumber) :
-    if sumber == "t_bab" :
+def query_select(nama_table) :
+    if nama_table == "t_bab" :
         query = (f"SELECT a.c_kodebab,\n"
                 f"a.c_NamaBab,\n"
                 f"a.c_Upline,\n"
@@ -14,7 +14,7 @@ def query_select(sumber) :
                 f"(SELECT DISTINCT c_kodebab FROM t_bab) kodebab\n"
                 f"ON kodebab.c_kodebab = a.c_kodebab;"
                 )
-    elif sumber == 't_buku' :
+    elif nama_table == 't_buku' :
         query = (f"SELECT a.c_kodebuku,\n"
                 f"a.c_NamaBuku,\n"
                 f"a.c_Deskripsi,\n"
@@ -33,16 +33,16 @@ def query_select(sumber) :
                 f"(SELECT DISTINCT c_kodebuku FROM t_buku) kodebuku\n"
                 f"ON kodebuku.c_kodebuku = a.c_kodebuku;"
                 )
-    elif sumber == 't_produkbuku' :
+    elif nama_table == 't_buku_produk' :
         query = ("SELECT * FROM db_materi.t_produkbuku;")
-    elif sumber == 't_bundelsoal' :
+    elif nama_table == 't_bundelsoal' :
         query = (
                 f"SELECT a.c_IdBundel, a.c_KodeBundel, a.c_Deskripsi, a.c_WaktuPengerjaan, a.c_TahunAjaran, a.c_JumlahSoal, a.c_Peruntukan, a.c_IdTingkatKelas, a.c_IdKelompokUjian, a.c_OpsiUrut, a.c_Status, a.c_Updater, a.c_LastUpdate, current_timestamp\n"
                 f"FROM t_bundelsoal a\n"
                 f"JOIN (SELECT DISTINCT c_IdBundel FROM t_bundelsoal) idbundel\n"
                 f"ON idbundel.c_IdBundel = a.c_idbundel;"
                  )
-    elif sumber == 't_isibundelsoal' :
+    elif nama_table == 't_isi_bundel_soal' :
         query = (
             f"SELECT i.c_IdSoal, i.c_IdBundel, i.c_NomorSoal, i.c_updater, i.c_LastUpdate FROM db_materi.t_isisoalbundel i JOIN (SELECT DISTINCT c_IdSoal, c_IdBundel, c_NomorSoal FROM t_isisoalbundel) id ON id.c_IdSoal = i.c_IdSoal AND id.c_IdBundel = i.c_IdBundel AND id.c_NomorSoal = i.c_NomorSoal;"
         )

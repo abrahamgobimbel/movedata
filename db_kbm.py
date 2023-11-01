@@ -1,9 +1,9 @@
-def query_select(sumber) :
-    if sumber == 't_bah' :
-        query = f"SELECT a.* FROM {sumber} a JOIN (SELECT DISTINCT c_idbah FROM {sumber}) idbah ON a.c_idbah = idbah.c_idbah;"
-    elif sumber == "t_cluster_pengajar_idpp" :
-        query = f"SELECT * FROM {sumber} a JOIN (SELECT DISTINCT c_IdPengajar FROM {sumber}) idpengajar ON a.c_IdPengajar = idpengajar.c_IdPengajar;"
-    elif sumber == 't_daftar_kegiatan_kbm' :
+def query_select(nama_table) :
+    if nama_table == 't_bah' :
+        query = f"SELECT a.* FROM t_bah a JOIN (SELECT DISTINCT c_idbah FROM t_bah) idbah ON a.c_idbah = idbah.c_idbah;"
+    elif nama_table == "t_cluster_pengajar_idpp" :
+        query = f"SELECT * FROM t_cluster_pengajar_idpp a JOIN (SELECT DISTINCT c_IdPengajar FROM t_cluster_pengajar_idpp) idpengajar ON a.c_IdPengajar = idpengajar.c_IdPengajar;"
+    elif nama_table == 't_daftar_kegiatan_kbm' :
         query = (f"SELECT row_number() OVER (ORDER BY c_id) AS row_num,\n"
                 f"c_Nama,\n"
                 f"JSON_UNQUOTE(c_Deskripsi->'$.c_DesSiswa') AS c_DesSiswa,\n"
@@ -26,12 +26,11 @@ def query_select(sumber) :
                 f"FROM t_bankdata\n"
                 f"WHERE c_parents in('0202','0201')\n"
                 f"ORDER BY c_id;")
-    elif sumber == 't_presensisiswa' :
+    elif nama_table == 't_presensi_siswa' :
         query = (
             f"SELECT p.*\n" 
             f"FROM db_kbm.t_presensisiswa p\n"
             f"JOIN (select distinct c_IdRencana, c_NoRegistrasi from t_presensisiswa) id\n"
             f"ON id.c_IdRencana = p.c_idrencana and id.c_NoRegistrasi=p.c_noregistrasi ;"
         )    
-    elif sumber =='t_rencanakerja_kbm' : 
     return query
