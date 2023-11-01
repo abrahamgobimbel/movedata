@@ -180,6 +180,11 @@ def primary_key(nama_table):
         't_buku' : 'c_id_buku',
         't_buku_produk' : 'c_id_buku_produk',
         't_bundel_soal' : 'c_id_bundel',
+        't_mapel_bab' : 'c_id',
+        't_teori_bab' : 'c_id_teori_bab',
+        't_video_soal' : 'c_id_video',
+        't_video_teori' : 'c_id_video',
+        't_wacana' : 'c_id_wacana',
         #db_report_siswa_goa
         't_target_lulus_goa' : 'c_id_target_lulus',
         
@@ -205,9 +210,15 @@ def kolom_table(nama_table):
         't_buku' : ['c_id_buku','c_nama_buku','c_deskripsi','c_semester','c_id_sekolah_kelas','c_id_kurikulum','c_tahun_ajaran',
                     'c_jenis_buku','c_id_kelompok_ujian','c_updater','c_created_at','c_last_update'],
         't_buku_produk' : ['c_id_buku','c_id_produk','c_updater','c_last_update'],
+        't_teori_bab' : ['c_id_teori_bab','c_uraian','c_level','c_kelengkapan','c_kode_bab','c_updater','c_created_at','c_last_update'],
         't_bundel_soal' : ['c_id_bundel','c_kode_bundel','c_deskripsi','c_waktu_pengerjaan','c_tahun_ajaran','c_jumlah_soal',
                            'c_peruntukan','c_id_sekolah_kelas','c_id_kelompok_ujian','c_opsi_urut','c_status','c_updater',
                            'c_created_at','c_last_update'],
+        't_mapel_bab' : ['c_kode_bab','c_id_mata_pelajaran','c_updater','c_insert','c_last_update'],
+        't_video_soal' : ['c_id_video','c_judul_video','c_keyword','c_deskripsi','c_link_video','c_updater','c_created_at','c_last_update'],
+        't_video_teori' : ['c_id_video','c_judul_video','c_deskripsi','c_link_video','c_kode_bab','c_level','c_kelengkapan',
+                           'c_updater','c_created_at','c_last_update'],
+        't_wacana' : ['c_id_wacana','c_judul_wacana','c_text','c_keyword','c_id_mata_pelajaran','c_updater','c_created_at','c_last_update'],
         #db_report_siswa_goa
         't_target_lulus_goa' : ['c_id_tingkat_kelas','c_tahun_ajaran','c_id_kelompok_ujian','c_minimal_benar','c_updater','c_created_at',
                                 'c_last_update',]
@@ -224,6 +235,11 @@ def foreign_key(nama_table):
         #db_materi
         't_bab' : ['c_id_buku'],
         't_bundel_soal' : [],
+        't_mapel_bab' : ['c_kode_bab'],
+        't_teori_bab' : ['c_kode_bab'],
+        't_video_soal' : [],
+        't_video_teori' : ['c_kode_bab'],
+        't_wacana' : [],
         #db_report_siswa_goa
         't_target_lulus_goa' : [],
     }
@@ -237,6 +253,11 @@ def foreign_key(nama_table):
         #db_materi 
         't_bab' : ['t_buku'],
         't_bundel_soal' :[],
+        't_mapel_bab' : ['t_bab'],
+        't_teori_bab' : ['t_bab'],
+        't_video_soal' : [],
+        't_video_teori' : ['t_bab'],
+        't_wacana' : [],
         #db_report_siswa_goa
         't_target_lulus_goa' : [],
     }
@@ -254,6 +275,11 @@ def unique_key(nama_table):
         't_buku' : [],
         't_buku_produk' : [['c_id_buku', 'c_id_produk']],
         't_bundelsoal' : [],
+        't_mapel_bab' : [['c_kode_bab', 'c_id_mata_pelajaran']],
+        't_teori_bab' : [],
+        't_video_soal' : [],
+        't_video_teori' : [],
+        't_wacana' : [],
         #db_report_siswa_goa
         't_target_lulus_goa' : [['c_id_tingkat_kelas','c_tahun_ajaran','c_id_kelompok_ujian']],
     }
