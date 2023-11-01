@@ -35,4 +35,11 @@ def query_select(sumber) :
                 )
     elif sumber == 't_produkbuku' :
         query = ("SELECT * FROM db_materi.t_produkbuku;")
+    elif sumber == 't_bundelsoal' :
+        query = (
+                f"SELECT a.c_IdBundel, a.c_KodeBundel, a.c_Deskripsi, a.c_WaktuPengerjaan, a.c_TahunAjaran, a.c_JumlahSoal, a.c_Peruntukan, a.c_IdTingkatKelas, a.c_IdKelompokUjian, a.c_OpsiUrut, a.c_Status, a.c_Updater, a.c_LastUpdate, current_timestamp\n"
+                f"FROM t_bundelsoal a\n"
+                f"JOIN (SELECT DISTINCT c_IdBundel FROM t_bundelsoal) idbundel\n"
+                f"ON idbundel.c_IdBundel = a.c_idbundel;"
+                 )
     return query
