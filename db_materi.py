@@ -42,4 +42,8 @@ def query_select(sumber) :
                 f"JOIN (SELECT DISTINCT c_IdBundel FROM t_bundelsoal) idbundel\n"
                 f"ON idbundel.c_IdBundel = a.c_idbundel;"
                  )
+    elif sumber == 't_isibundelsoal' :
+        query = (
+            f"SELECT i.c_IdSoal, i.c_IdBundel, i.c_NomorSoal, i.c_updater, i.c_LastUpdate FROM db_materi.t_isisoalbundel i JOIN (SELECT DISTINCT c_IdSoal, c_IdBundel, c_NomorSoal FROM t_isisoalbundel) id ON id.c_IdSoal = i.c_IdSoal AND id.c_IdBundel = i.c_IdBundel AND id.c_NomorSoal = i.c_NomorSoal;"
+        )
     return query

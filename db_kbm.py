@@ -26,5 +26,12 @@ def query_select(sumber) :
                 f"FROM t_bankdata\n"
                 f"WHERE c_parents in('0202','0201')\n"
                 f"ORDER BY c_id;")
-        
+    elif sumber == 't_presensisiswa' :
+        query = (
+            f"SELECT p.*\n" 
+            f"FROM db_kbm.t_presensisiswa p\n"
+            f"JOIN (select distinct c_IdRencana, c_NoRegistrasi from t_presensisiswa) id\n"
+            f"ON id.c_IdRencana = p.c_idrencana and id.c_NoRegistrasi=p.c_noregistrasi ;"
+        )    
+    elif sumber =='t_rencanakerja_kbm' : 
     return query

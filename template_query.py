@@ -132,7 +132,11 @@ values = []
 for array in data_sql:
     new_tuple = tuple(function.format_datetime(val) for val in array)
     values.append(new_tuple)
-if len(values) > 10 :
+if len(values) >1000 :
+    batch_size = round(len(values)/1000)
+elif len(values) >100 :
+    batch_size = round(len(values)/100)
+elif len(values) > 10 :
     batch_size = round(len(values)/10)
 else : 
     batch_size = 1
@@ -169,8 +173,12 @@ if jenis_table == 'penghubung' :
     sql_statements.append(f"CREATE TABLE {nama_table_baru} AS SELECT * FROM {nama_table} WHERE false;")
     sql_statements.append(f"ALTER TABLE {nama_table_baru} DROP COLUMN {primary_key};")
     sql_statements.append(f"alter table {nama_table_baru} ADD {primary_key} serial;")
-    sql_statements.append(f"insert into {nama_table_baru} {unique_select};")
-    sql_statements.append(f"ALTER TABLE {nama_table_baru} ADD CONSTRAINT unique_{nama_table_baru} UNIQUE ({', '.join(unique_last)});")
+    if nama_table != 't_isi_bundel_soal' :
+        sql_statements.append(f"insert into {nama_table_baru} {unique_select};")
+    if nama_table == 't_isi_bundel_soal' :
+        sql_statements.append(f"ALTER TABLE {nama_table_baru} ADD CONSTRAINT unique_{nama_table_baru} UNIQUE (c_id_bundel, c_id_soal);")
+    else : 
+        sql_statements.append(f"ALTER TABLE {nama_table_baru} ADD CONSTRAINT unique_{nama_table_baru} UNIQUE ({', '.join(unique_last)});")
     sql_statements.append(f"ALTER TABLE {nama_table_baru} ADD CONSTRAINT {nama_table_baru}_pk PRIMARY KEY ({primary_key});")
     
     for i in range(0, len(values), batch_size):
@@ -180,18 +188,22 @@ if jenis_table == 'penghubung' :
             batch_sql_query.append(f"{value}")
 
         batch_sql_query = ', '.join(batch_sql_query)
-        sql_query_ = f"INSERT INTO {nama_table_baru} ({', '.join(kolom_table)}) VALUES {batch_sql_query} ON CONFLICT ({', '.join(unique_last)}) DO NOTHING;"
+        if nama_table != 't_isi_bundel_soal':
+            sql_query_ = f"INSERT INTO {nama_table_baru} ({', '.join(kolom_table)}) VALUES {batch_sql_query} ON CONFLICT ({', '.join(unique_last)}) DO NOTHING;"
+        else : 
+            sql_query_ = f"INSERT INTO {nama_table_baru} ({', '.join(kolom_table)}) VALUES {batch_sql_query} ON CONFLICT (c_id_bundel, c_id_soal) DO NOTHING;"
         sql_statements.append(sql_query_)
 
     sql_statements.append(f"DROP TABLE IF EXISTS {nama_table};")
     sql_statements.append(f"ALTER TABLE {nama_table_baru} RENAME TO {nama_table};")
     sql_statements.append(f"ALTER TABLE {nama_table} RENAME CONSTRAINT {nama_table_baru}_pk TO {nama_table}_pk;")
     sql_statements.append(f"ALTER TABLE {nama_table} RENAME CONSTRAINT unique_{nama_table_baru} TO unique_{nama_table};") 
-    sql_statements.append(f"GRANT INSERT, UPDATE, TRIGGER, TRUNCATE, SELECT, REFERENCES, DELETE ON TABLE {nama_table} TO developer;")
-
+    if nama_table == 't_isi_bundel_soal' :
+        sql_statements.append(f"WITH CTE AS ( SELECT c_id_bundel, c_id_soal, ROW_NUMBER() OVER (PARTITION BY c_id_bundel ORDER BY c_id_soal) AS new_urutan FROM {nama_table} WHERE c_id_bundel IN ( SELECT c_id_bundel FROM ( SELECT c_id_Bundel, c_nomor_soal FROM {nama_table} GROUP BY c_id_bundel, c_nomor_soal HAVING COUNT(*) > 1 ) cek ) ) UPDATE {nama_table} AS tgt SET c_nomor_soal = CTE.new_urutan FROM CTE WHERE tgt.c_id_bundel = CTE.c_id_bundel and tgt.c_id_soal = CTE.c_id_soal;") 
+        sql_statements.append(f"update {nama_table} set c_nomor_soal = 1 where c_nomor_soal is null;")
+        sql_statements.append(f"WITH CTE AS ( SELECT c_id_bundel, c_id_soal, ROW_NUMBER() OVER (PARTITION BY c_id_bundel ORDER BY c_id_soal) AS new_urutan FROM {nama_table} WHERE c_id_bundel IN ( SELECT c_id_bundel FROM ( SELECT c_id_Bundel, c_nomor_soal FROM {nama_table} GROUP BY c_id_bundel, c_nomor_soal HAVING COUNT(*) > 1 ) cek ) ) UPDATE {nama_table} AS tgt SET c_nomor_soal = CTE.new_urutan FROM CTE WHERE tgt.c_id_bundel = CTE.c_id_bundel and tgt.c_id_soal = CTE.c_id_soal;") 
     for i in range (len(unique_key)) :
-        if unique_key[i] != unique_last : 
-            sql_statements.append(f"ALTER TABLE {nama_table} ADD CONSTRAINT unique_{nama_table_baru}_{i} UNIQUE ({', '.join(unique_key[i])});")
+        sql_statements.append(f"ALTER TABLE {nama_table} ADD CONSTRAINT unique_{nama_table_baru}_{i} UNIQUE ({', '.join(unique_key[i])});")
     for i in range (len(foreign_column)):
         sql_statements.append(f"DELETE FROM {nama_table} WHERE NOT EXISTS (SELECT 1 FROM {foreign_table[i]} WHERE {nama_table}.{foreign_column[i]} = {foreign_table[i]}.{foreign_column[i]});")
     for i in range (len(foreign_column)) :
