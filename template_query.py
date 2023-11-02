@@ -222,8 +222,9 @@ elif jenis_table == 'master' :
             sql_statements.append(f"ALTER TABLE {nama_table} ADD CONSTRAINT {nama_table}_{foreign_column[i]}_fkey FOREIGN KEY ({foreign_column[i]})  REFERENCES {foreign_table[i]} ({foreign_column[i]});" ) 
 new_sql_file = f'{nama_database}_{nama_table}.sql'
 
-with open(new_sql_file, 'w', encoding='utf-8') as new_file:
+with open(new_sql_file, 'w', encoding='cp1252') as new_file:
     modified_statements = [statement.replace("\\'", "").replace("\\", "").replace("'NULL'","NULL") for statement in sql_statements]
     new_file.write('\n'.join(modified_statements))
 print(f"File done : {new_sql_file}")
+
 

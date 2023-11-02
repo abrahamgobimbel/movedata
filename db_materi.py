@@ -46,4 +46,26 @@ def query_select(nama_table) :
         query = (
             f"SELECT i.c_IdSoal, i.c_IdBundel, i.c_NomorSoal, i.c_updater, i.c_LastUpdate FROM db_materi.t_isisoalbundel i JOIN (SELECT DISTINCT c_IdSoal, c_IdBundel, c_NomorSoal FROM t_isisoalbundel) id ON id.c_IdSoal = i.c_IdSoal AND id.c_IdBundel = i.c_IdBundel AND id.c_NomorSoal = i.c_NomorSoal;"
         )
+    elif sumber == 't_mapel_bab' :
+        query = (
+                f"SELECT c_KodeBab, c_IdMataPelajaran, c_Updater, c_LastUpdate, current_timestamp() from t_bab\n"
+                f"where c_IdMataPelajaran IS NOT NULL"
+                 )
+    elif sumber == 't_teori_bab' :
+        query = (
+                f"SELECT *, current_timestamp() FROM db_materi.t_teoribab;"
+                 )
+    elif sumber == 't_video_soal' :
+        query = (
+                f"SELECT c_IdVideo, c_JudulVideo, c_Keyword, c_Deskripsi, c_LinkVideo, c_Updater, c_LastUpdate, current_timestamp() FROM db_materi.t_videosoal;"
+                 )
+    elif sumber == 't_video_teori' :
+        query = (
+                f"SELECT c_IdVideo,c_JudulVideo,c_Deskripsi,c_LinkVideo,c_KodeBab,c_Level,c_Kelengkapan,c_Updater,c_LastUpdate,current_timestamp() FROM db_materi.t_videoteori;"
+                 )
+    elif sumber == 't_wacana' :
+        query = (
+                f"SELECT *, current_timestamp FROM db_materi_update.t_wacana;"
+                 )
     return query
+
