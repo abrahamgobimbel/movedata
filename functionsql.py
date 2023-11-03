@@ -47,6 +47,8 @@ def data_sql(nama_database, nama_table):
             query = db_go.query_select(nama_table)
         elif nama_database == 'db_materi':
             query = db_materi.query_select(nama_table)
+        elif nama_database == 'db_produk' :
+            query = db_produk.query_select(nama_table)
         elif nama_database == 'db_report_siswa_goa' :
             query = db_report_siswa_goa.query_select(nama_table)
 
