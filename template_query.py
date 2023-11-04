@@ -164,11 +164,11 @@ if jenis_table == 'penghubung' :
     sql_statements.append(f"CREATE TABLE {nama_table_baru} AS SELECT * FROM {nama_table} WHERE false;")
     sql_statements.append(f"ALTER TABLE {nama_table_baru} DROP COLUMN {primary_key};")
     sql_statements.append(f"alter table {nama_table_baru} ADD {primary_key} serial;")
-    if nama_table != 't_isi_bundel_soal' and nama_table != 't_paket_dan_bundel':
+    if nama_table != 't_isi_bundel_soal' and nama_table != 't_paket_dan_bundel' and nama_table != 't_paket_dan_bundel_materi':
         sql_statements.append(f"insert into {nama_table_baru} {unique_select};")
     if nama_table == 't_isi_bundel_soal' :
         sql_statements.append(f"ALTER TABLE {nama_table_baru} ADD CONSTRAINT unique_{nama_table_baru} UNIQUE (c_id_bundel, c_id_soal);")
-    elif nama_table == 't_paket_dan_bundel' :
+    elif nama_table == 't_paket_dan_bundel' or nama_table =='t_paket_dan_bundel_materi' :
         sql_statements.append(f"ALTER TABLE {nama_table_baru} ADD CONSTRAINT unique_{nama_table_baru} UNIQUE (c_id_bundel, c_kode_paket);")
     else : 
         sql_statements.append(f"ALTER TABLE {nama_table_baru} ADD CONSTRAINT unique_{nama_table_baru} UNIQUE ({', '.join(unique_last)});")
@@ -183,7 +183,7 @@ if jenis_table == 'penghubung' :
         batch_sql_query = ', '.join(batch_sql_query)
         if nama_table == 't_isi_bundel_soal':
             sql_query_ = f"INSERT INTO {nama_table_baru} ({', '.join(kolom_table)}) VALUES {batch_sql_query} ON CONFLICT (c_id_bundel, c_id_soal) DO NOTHING;"
-        elif nama_table =='t_paket_dan_bundel' :
+        elif nama_table =='t_paket_dan_bundel' or nama_table == 't_paket_dan_bundel_materi':
             sql_query_ = f"INSERT INTO {nama_table_baru} ({', '.join(kolom_table)}) VALUES {batch_sql_query} ON CONFLICT (c_id_bundel, c_kode_paket) DO NOTHING;"
         else : 
             sql_query_ = f"INSERT INTO {nama_table_baru} ({', '.join(kolom_table)}) VALUES {batch_sql_query} ON CONFLICT ({', '.join(unique_last)}) DO NOTHING;"
@@ -198,7 +198,7 @@ if jenis_table == 'penghubung' :
         sql_statements.append(f"WITH CTE AS ( SELECT c_id_bundel, c_id_soal, ROW_NUMBER() OVER (PARTITION BY c_id_bundel ORDER BY c_id_soal) AS new_urutan FROM {nama_table} WHERE c_id_bundel IN ( SELECT c_id_bundel FROM ( SELECT c_id_Bundel, c_nomor_soal FROM {nama_table} GROUP BY c_id_bundel, c_nomor_soal HAVING COUNT(*) > 1 ) cek ) ) UPDATE {nama_table} AS tgt SET c_nomor_soal = CTE.new_urutan FROM CTE WHERE tgt.c_id_bundel = CTE.c_id_bundel and tgt.c_id_soal = CTE.c_id_soal;") 
         sql_statements.append(f"update {nama_table} set c_nomor_soal = 1 where c_nomor_soal is null;")
         sql_statements.append(f"WITH CTE AS ( SELECT c_id_bundel, c_id_soal, ROW_NUMBER() OVER (PARTITION BY c_id_bundel ORDER BY c_id_soal) AS new_urutan FROM {nama_table} WHERE c_id_bundel IN ( SELECT c_id_bundel FROM ( SELECT c_id_Bundel, c_nomor_soal FROM {nama_table} GROUP BY c_id_bundel, c_nomor_soal HAVING COUNT(*) > 1 ) cek ) ) UPDATE {nama_table} AS tgt SET c_nomor_soal = CTE.new_urutan FROM CTE WHERE tgt.c_id_bundel = CTE.c_id_bundel and tgt.c_id_soal = CTE.c_id_soal;") 
-    elif nama_table == 't_paket_dan_bundel' :
+    elif nama_table == 't_paket_dan_bundel' or nama_table == 't_paket_dan_bundel_materi' :
         sql_statements.append(f"WITH CTE AS ( SELECT c_kode_paket, c_id_bundel, ROW_NUMBER() OVER (PARTITION BY c_kode_paket ORDER BY c_id_bundel) AS new_urutan FROM {nama_table} WHERE c_kode_paket IN ( SELECT c_kode_paket FROM ( SELECT c_kode_paket, c_urutan FROM {nama_table} GROUP BY c_kode_paket, c_urutan HAVING COUNT(*) > 1 ) cek ) ) UPDATE {nama_table} AS tgt SET c_urutan = CTE.new_urutan FROM CTE WHERE tgt.c_kode_paket = CTE.c_kode_paket and tgt.c_id_bundel = CTE.c_id_bundel;") 
         sql_statements.append(f"update {nama_table} set c_urutan = 1 where c_urutan is null;")
         sql_statements.append(f"WITH CTE AS ( SELECT c_kode_paket, c_id_bundel, ROW_NUMBER() OVER (PARTITION BY c_kode_paket ORDER BY c_id_bundel) AS new_urutan FROM {nama_table} WHERE c_kode_paket IN ( SELECT c_kode_paket FROM ( SELECT c_kode_paket, c_urutan FROM {nama_table} GROUP BY c_kode_paket, c_urutan HAVING COUNT(*) > 1 ) cek ) ) UPDATE {nama_table} AS tgt SET c_urutan = CTE.new_urutan FROM CTE WHERE tgt.c_kode_paket = CTE.c_kode_paket and tgt.c_id_bundel = CTE.c_id_bundel;") 
