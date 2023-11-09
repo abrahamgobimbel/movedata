@@ -123,14 +123,22 @@ values = []
 for array in data_sql:
     new_tuple = tuple(function.format_datetime(val) for val in array)
     values.append(new_tuple)
-if len(values) > 1000000000 :
-    batch_size = round(len(values)/1000)
+    
+if len(values) > 10000 :
+    pembagi = round(len(values)/10000)
+    batch_size = round(len(values)/pembagi)
 elif len(values) > 1000 :
-    batch_size = round(len(values)/100)
+    pembagi = round(len(values)/1000)
+    batch_size = round(len(values)/pembagi)
+elif len(values) > 100 :
+    pembagi = round(len(values)/100)
+    batch_size = round(len(values)/pembagi)
 elif len(values) > 10 :
-    batch_size = round(len(values)/10)
+    pembagi = round(len(values)/10)
+    batch_size = round(len(values)/pembagi)
 else : 
-    batch_size = 1
+    pembagi = 1
+    batch_size = round(len(values)/pembagi)
 
 
 
@@ -231,11 +239,16 @@ elif jenis_table == 'master' :
             sql_statements.append(f"DELETE FROM {nama_table} WHERE NOT EXISTS (SELECT 1 FROM {foreign_table[i]} WHERE {nama_table}.{foreign_column[i]} = {foreign_table[i]}.{foreign_column[i]});")
         for i in range (len(foreign_column)) :
             sql_statements.append(f"ALTER TABLE {nama_table} ADD CONSTRAINT {nama_table}_{foreign_column[i]}_fkey FOREIGN KEY ({foreign_column[i]})  REFERENCES {foreign_table[i]} ({foreign_column[i]});" ) 
+    if nama_table == 't_soal' :
+        sql_statements.append(f"UPDATE t_soal SET c_opsi = REPLACE(c_opsi::text, '&quotes;', '''')::jsonb WHERE c_opsi::text LIKE '%&quotes;%';")
+        sql_statements.append(f"UPDATE t_soal SET c_soal = REPLACE(c_soal, '&quotes;', '''') WHERE c_soal LIKE '%&quotes;%';")
+    if nama_table == 't_wacana' :
+        sql_statements.append(f"UPDATE t_wacana SET c_Text= REPLACE(c_Text, '&quotes;', '''') WHERE c_Text LIKE '%&quotes;%';")
 new_sql_file = f'{nama_database}_{nama_table}.sql'
 
 with open(new_sql_file, 'w', encoding='utf-8') as new_file:
     modified_statements = [statement.replace("\\'", "").replace("\\", "").replace("'NULL'","NULL") for statement in sql_statements]
     new_file.write('\n'.join(modified_statements))
-print(f"File done : {new_sql_file}")
+print(f"File done : {new_sql_file}\n")
 
 

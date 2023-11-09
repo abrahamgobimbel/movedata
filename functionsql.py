@@ -34,10 +34,11 @@ def format_datetime(dt):
 def data_sql(nama_database, nama_table):
     try:
         connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="gobimbel",
-            database=nama_database
+            host="192.168.169.193",
+            user="goexpert",
+            password="!6iri&Lu5i?",
+            database = "db_banksoalV2",
+            port = 3306
         )
         cursor = connection.cursor()
 
@@ -51,7 +52,6 @@ def data_sql(nama_database, nama_table):
             query = db_produk.query_select(nama_table)
         elif nama_database == 'db_report_siswa_goa' :
             query = db_report_siswa_goa.query_select(nama_table)
-
         
         cursor.execute(query)
         results = cursor.fetchall()
