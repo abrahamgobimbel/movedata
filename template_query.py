@@ -233,7 +233,6 @@ elif jenis_table == 'master' :
         sql_query = f"SELECT DISTINCT {primary_key} FROM {nama_table}"
         sql_query_ = f"INSERT INTO {nama_table} ({', '.join(kolom_table)}) VALUES {batch_sql_query} ON CONFLICT ({primary_key}) DO UPDATE SET {update_statement};"
         sql_statements.append(sql_query_)
-    sql_statements.append(f"GRANT INSERT, UPDATE, TRIGGER, TRUNCATE, SELECT, REFERENCES, DELETE ON TABLE {nama_table} TO developer;")
     if len(foreign_column) > 0 :
         for i in range (len(foreign_column)):
             sql_statements.append(f"DELETE FROM {nama_table} WHERE NOT EXISTS (SELECT 1 FROM {foreign_table[i]} WHERE {nama_table}.{foreign_column[i]} = {foreign_table[i]}.{foreign_column[i]});")
@@ -248,7 +247,17 @@ new_sql_file = f'{nama_database}_{nama_table}.sql'
 
 with open(new_sql_file, 'w', encoding='utf-8') as new_file:
     modified_statements = [statement.replace("\\'", "").replace("\\", "").replace("'NULL'","NULL") for statement in sql_statements]
-    new_file.write('\n'.join(modified_statements))
+    
+    encoded_statements = []
+    for statement in modified_statements:
+        try:
+            encoded_statement = statement.encode('utf-8', errors='replace').decode('utf-8')
+            encoded_statements.append(encoded_statement)
+        except UnicodeEncodeError as e:
+            print(f"Error encoding statement: {e}")
+            # Handle the error, you may want to log it or replace the problematic character
+
+    new_file.write('\n'.join(encoded_statements))
 print(f"File done : {new_sql_file}\n")
 
 

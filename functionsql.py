@@ -42,16 +42,20 @@ def data_sql(nama_database, nama_table):
         )
         cursor = connection.cursor()
 
-        if nama_database == 'db_kbm':
-            query = db_kbm.query_select(nama_table)
-        elif nama_database == 'db_go' :
+        
+        if nama_database == 'db_go' :
             query = db_go.query_select(nama_table)
+        elif nama_database == 'db_kbm':
+            query = db_kbm.query_select(nama_table)
         elif nama_database == 'db_materi':
             query = db_materi.query_select(nama_table)
         elif nama_database == 'db_produk' :
             query = db_produk.query_select(nama_table)
+        elif nama_database == 'db_report_siswa_empati_wajib' :
+            query = db_report_siswa_empati_wajib.query_select(nama_table)
         elif nama_database == 'db_report_siswa_goa' :
             query = db_report_siswa_goa.query_select(nama_table)
+        
         
         cursor.execute(query)
         results = cursor.fetchall()

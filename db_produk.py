@@ -92,8 +92,8 @@ def query_select(nama_table) :
     
     
     elif nama_table == 't_tob' : 
-        unique_select = ["tt.c_KodeTOB" , "c_NamaTOB" , "c_JarakAntarPaket" , "'2023-11-09 00:01:00' as awal", 
-                         "'2023-11-10 16:59:00' as akhir","tt.c_TahunAjaran" , "tt.c_Jenis" , "tt.c_IsTOMerdeka" ,
+        unique_select = ["tt.c_KodeTOB" , "c_NamaTOB" , "c_JarakAntarPaket" , "'2023-11-11 00:00:01' as c_TanggalAktif", 
+                         "'2023-11-11 16:59:00' as c_TanggalKadaluarsa","tt.c_TahunAjaran" , "tt.c_Jenis" , "tt.c_IsTOMerdeka" ,
                          "'Aktif'  as c_Status" , "tt.c_Updater" , "tt.c_LastUpdate" , "CURRENT_TIMESTAMP()" ]
         file_path_tob = 'db_produk_kode_tob.txt'
         data_tob = functioninput.data_input(file_path_tob)

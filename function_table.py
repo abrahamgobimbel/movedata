@@ -19,7 +19,7 @@ def nama_table(database_name):
         'db_report_siswa_empati_mandiri' : ['t_hasil_jawaban_1', 't_hasil_jawaban_10', 't_hasil_jawaban_11', 't_hasil_jawaban_12', 't_hasil_jawaban_13', 't_hasil_jawaban_2',
                                             't_hasil_jawaban_3', 't_hasil_jawaban_4', 't_hasil_jawaban_5', 't_hasil_jawaban_6', 't_hasil_jawaban_7', 't_hasil_jawaban_8',
                                             't_hasil_jawaban_9', 't_jawaban_siswa', 't_peserta_to'],
-        'db_report_siswa_empati_wajib' : ['t_hasil_jawaban_1', 't_hasil_jawaban_10', 't_hasil_jawaban_11', 't_hasil_jawaban_12', 't_hasil_jawaban_13', 't_hasil_jawaban_2',
+        'db_report_siswa_empati_wajib' : ['t_hasil_empati_12','t_hasil_jawaban_1', 't_hasil_jawaban_10', 't_hasil_jawaban_11', 't_hasil_jawaban_12', 't_hasil_jawaban_13', 't_hasil_jawaban_2',
                                         't_hasil_jawaban_3', 't_hasil_jawaban_4', 't_hasil_jawaban_5', 't_hasil_jawaban_6', 't_hasil_jawaban_7', 't_hasil_jawaban_8',
                                         't_hasil_jawaban_9',  't_jawaban_siswa', 't_peserta_to', 't_syarat_empati'],
         'db_report_siswa_goa' : ['t_hasil_jawaban_1', 't_hasil_jawaban_10', 't_hasil_jawaban_11', 't_hasil_jawaban_12', 't_hasil_jawaban_13', 't_hasil_jawaban_2',
@@ -136,7 +136,7 @@ def jenis_table(nama_database, nama_table):
         'db_produk_teaser' : ['t_isi_tob_teaser','t_paket_dan_bundel_teaser','t_produk_tob_teaser'],
         'db_ptn' : [],
         'db_report_siswa_empati_mandiri' : [],
-        'db_report_siswa_empati_wajib' : [],
+        'db_report_siswa_empati_wajib' : ['t_hasil_empati_12'],
         'db_report_siswa_goa' : ['t_target_lulus_goa'],
         'db_report_siswa_irt' : [],
         'db_report_siswa_kuis' : [],
@@ -170,13 +170,21 @@ def primary_key(nama_table):
     primary_keys = {
         # db_go
         't_berita': 'c_id_berita',
+        't_bidang_go' : 'c_id_bidang',
+        't_gedung' : 'c_id_gedung',
         't_gokomar': 'c_id_komar',
+        't_kota' : 'c_id_kota',
         # db_kbm
         't_bah': 'c_id_bah',
+        't_bah_kelas' : 'c_id',
+        't_cluster_pengajar' : 'c_id_pengajar',
         't_daftar_kegiatan_kbm' : 'c_id_kegiatan',
         't_feedback_pengajaran' : 'c_id',
+        't_kelas' : 'c_id_kelas',
         't_isi_bah': 'c_id',
+        't_permintaan_tst' : 'c_id_permintaan',
         't_presensi_siswa' : 'c_id',
+        't_rencana_kerja' : 'c_id_rencana',
         't_rencana_kerja_kbm' : 'c_id_rencana',
         #db_materi
         't_bab' : 'c_kode_bab',
@@ -205,6 +213,8 @@ def primary_key(nama_table):
         't_produk_mix' : 'c_id_produk_mix',
         't_produk_tob' : 'c_id',
         't_tob' : 'c_kode_tob',
+        #db_report_siswa_empati_wajib
+        't_hasil_empati_12' : 'c_id',
         #db_report_siswa_goa
         't_target_lulus_goa' : 'c_id_target_lulus',
         #db_report_siswa_peringkat :
@@ -218,17 +228,25 @@ def kolom_table(nama_table):
         # db_go
         't_berita': ['c_id_berita', 'c_tanggal_terbit', 'c_tanggal_berakhir', 'c_judul', 'c_deskripsi', 'c_url', 'c_updater','c_status', 
                      'c_untuk', 'c_jenis', 'c_photo', 'c_jumlah_viewer', 'c_last_update', 'c_created_at'],
+        't_bidang_go' : ['c_id_bidang','c_nama_bidang','c_status','c_id_kewilayahan','c_upline','c_updater','c_created_at','c_last_update'],
+        't_gedung' : ['c_id_gedung','c_id_komar','c_id_lurah','c_id_peruntukan','c_nama_gedung','c_alamat','c_rt','c_rw','c_kode_pos','c_telp_1','c_telp_2','c_geolokasi','c_luas_tanah','c_luas_bangunan_awal','c_luas_bangunan_sekarang','c_luas_bidang_datar','c_jumlah_lantai','c_luas_parkir','c_daya_listrik_awal','c_daya_listrik_sekarang','c_sumber_listrik','c_sumber_air','c_status','c_keterangan','c_updater','c_ip_vpn','c_key','c_last_update','c_zona_waktu'],
         't_gokomar': ['c_id_komar', 'c_nama_komar', 'c_id_kewilayahan', 'c_upline', 'c_id_kota', 'c_status', 'c_updater',
                       'c_last_update'],
+        't_kota' : ['c_id_kota','c_kota','c_updater','c_created_at','c_last_update'],
         #db_kbm
         't_bah' : ['c_id_bah', 'c_kode_bah', 'c_semester', 'c_tahun_ajaran', 'c_id_tingkat_kelas', 'c_id_kurikulum', 
                   'c_id_jenis_layanan', 'c_id_kelompok_ujian', 'c_jumlah_pertemuan', 'c_id_silabus', 'c_updater', 'c_last_update'],
+        't_bah_kelas' :[],
+        't_cluster_pengajar' : ['c_id_biodata','c_id_pengajar','c_nik','c_nama_lengkap','c_inisial','c_tingkat_kelas','c_jumlah_kuota','c_status_pengajar','c_id_gedung','c_id_penanda','c_status','c_id_pelajaran_sd','c_id_pelajaran_smp','c_id_pelajaran_sma','c_grade_sd','c_grade_smp','c_grade_sma','c_grade_tst','c_grade_global','c_info_kontak'],
         't_daftar_kegiatan_kbm' : ['c_id_kegiatan','c_nama_kegiatan','c_deskripsi_siswa','c_deskripsi_petugas','c_deskripsi_pengajar',
                                    'c_kr','c_pf','c_ph','c_pk','c_pengali','c_is_relatif','c_pengali_sd','c_waktu_maksimal',
                                    'c_waktu_minimal','c_id_jenis_petugas','c_dasar_pengajian','c_updater','c_created_at','c_last_update','c_id_info_kegiatan'],
         't_feedback_pengajaran' : ['c_id_rencana','c_no_register','c_nis','c_n0','c_n1','c_n2','c_n3','c_n4','c_n5','c_last_update'],
+        't_kelas' : ['c_id_kelas','c_id_sekolah_kelas','c_tahun_ajaran','c_nama_kelas','c_tanggal_start','c_tanggal_berakhir','c_status','c_updater','c_last_update','c_id_gedung','c_tanggal_status','c_tanggal_re','c_status_rptk','c_id_jenis_kelas'],
         't_isi_bah': ['c_id', 'c_id_bah', 'c_kode_bab', 'c_pertemuan', 'c_updater', 'c_last_update'],
+        't_permintaan_tst' : ['c_id_permintaan','c_tanggal_permintaan','c_jam_awal_tst','c_jam_akhir_tst','c_id_jenis_tst','c_tanggal_kegunaan','c_id_pelajaran','c_kegunaan','c_status','c_tanggal_acc','c_permintaan_dari','c_id_gedung','c_tahun_ajaran','c_nik_pengajar','c_id_rencana','c_updater','c_last_update'],
         't_presensi_siswa' : ['c_id_rencana','c_no_register','c_id_gedung','c_latitude','c_longitude','c_jarak','c_waktu','c_imei','c_tanggal','c_id_kelas','c_nama_kelas','c_sesi','c_last_update','c_id_kelas_siswa','c_flag_kelas','c_nik','c_nama_pengajar','c_jam_awal','c_jam_akhir','c_is_feedback'],
+        't_rencana_kerja' : ['c_id_rencana','c_id_gedung','c_nik','c_jam_awal','c_jam_akhir','c_id_kegiatan','c_info_1','c_info_2','c_info_3','c_tahun_ajaran','c_keterangan','c_status_rencana','c_updater_rencana','c_last_update'],
         't_rencana_kerja_kbm' : ['c_id_rencana','c_id_gedung','c_nik','c_jam_awal','c_jam_akhir','c_id_kegiatan','c_info_1','c_info_2','c_info_3','c_tahun_ajaran','c_status_rencana','c_updater_rencana','c_last_update','c_rencana','c_realisasi','c_siswa_hadir'],
         #db_materi :
         't_bab' : ['c_kode_bab','c_nama_bab','c_upline','c_peluang','c_status','c_updater','c_created_at','c_last_update'],
@@ -261,6 +279,8 @@ def kolom_table(nama_table):
         't_produk_mix' : ['c_id_produk_mix','c_nama_produk_mix','c_id_jenis_kelas','c_id_kurikulum','c_id_sekolah_kelas','c_is_kerjasama','c_is_jenis_pertemuan','c_jum_s1','c_jum_s2','c_jum_s3','c_is_jaminan','c_zona','c_kode_unik','c_status','c_updater','c_created_at','c_last_update'],
         't_produk_tob' : ['c_kode_tob','c_id_produk','c_updater','c_last_update'],
         't_tob' : ['c_kode_tob','c_nama_tob','c_menit_antar_soal','c_tanggal_awal','c_tanggal_kedaluwarsa','c_tahun_ajaran','c_jenis','c_to_merdeka','c_status','c_updater','c_created_at','c_last_update'],
+        #db_report_siswa_empati_wajib
+        't_hasil_empati_12' : ['c_no_register','c_kode_tob', 'c_kode_paket', 'c_jumlah_soal', 'c_jumlah_benar', 'c_jumlah_salah', 'c_is_boleh','c_nik_verif', 'c_created_at', 'c_last_update'],
         #db_report_siswa_goa
         't_target_lulus_goa' : ['c_id_tingkat_kelas','c_tahun_ajaran','c_id_kelompok_ujian','c_minimal_benar','c_updater','c_created_at',
                                 'c_last_update',]
@@ -271,6 +291,7 @@ def kolom_table(nama_table):
 def foreign_key(nama_table):
     foreign_keys = {
         #db_go
+        't_berita' : [],
         't_gokomar': ['c_id_kota'],
         #db_kbm
         't_feedback_pengajaran' : ['c_id_rencana'],
@@ -307,6 +328,7 @@ def foreign_key(nama_table):
 
     foreign_tables = {
         #db_go
+        't_berita' : [],
         't_gokomar': ['t_kota'],
         #db_kbm
         't_daftar_kegiatan_kbm' : [],
@@ -378,6 +400,8 @@ def unique_key(nama_table):
         't_produk_mix' : [],
         't_produk_tob' : [['c_kode_tob', 'c_id_produk']],
         't_tob' : [],
+        #db_report_siswa_empati_wajib
+        't_hasil_empati_12' : [['c_no_register', 'c_kode_tob','c_kode_paket']],
         #db_report_siswa_goa
         't_target_lulus_goa' : [['c_id_tingkat_kelas','c_tahun_ajaran','c_id_kelompok_ujian']],
     }
