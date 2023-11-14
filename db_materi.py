@@ -18,6 +18,9 @@ def query_select(nama_table) :
                 f"JOIN db_banksoalV2.t_PaketSoal USING (c_KodePaket)\n"
                 f"JOIN db_banksoalV2.t_IsiTOB tit USING (c_KodePaket)"
                 f"WHERE tit.c_KodeTOB IN ({', '.join(data_tob)});")
+        if data_tob == [] :
+            query = (f"SELECT DISTINCT {','.join(unique_select)}\n"
+                     f"from db_banksoalV2.t_Bab tb")
     
     elif nama_table == 't_buku' :
         query = (f"SELECT a.c_kodebuku,\n"
@@ -33,14 +36,12 @@ def query_select(nama_table) :
                 f"a.c_LastUpdate,\n"
                 f"current_timestamp\n"
                 f"FROM\n"
-                f"db_materi.t_buku a\n"
-                f"JOIN\n"
-                f"(SELECT DISTINCT c_kodebuku FROM t_buku) kodebuku\n"
-                f"ON kodebuku.c_kodebuku = a.c_kodebuku;"
+                f"db_banksoalV2.t_Buku a \n"
+                f"where a.c_TahunAjaran = '2023/2024'"
                 )
     
     elif nama_table == 't_buku_produk' :
-        query = ("SELECT * FROM db_materi.t_produkbuku;")
+        query = ("SELECT * FROM db_banksoalV2.t_ProdukBuku tpb ;")
     
     elif nama_table == 't_bundel_soal' :
         unique_select = ["tbs.c_IdBundel" , "tbs.c_KodeBundel" , "tbs.c_Deskripsi"  , "tbs.c_WaktuPengerjaan" , 
@@ -54,6 +55,15 @@ def query_select(nama_table) :
                  f"JOIN db_banksoalV2.t_PaketSoal USING (c_KodePaket)\n"
                  f"JOIN db_banksoalV2.t_IsiTOB tit USING (c_KodePaket)\n"
                  f"WHERE tit.c_KodeTOB in ({', '.join(data_tob)});")
+        if data_tob == [] :
+            query =(f"SELECT DISTINCT {', '.join(unique_select)}\n"
+                    f"FROM db_banksoalV2.t_BundelSoal tbs \n"
+                    f"where tbs.c_TahunAjaran = '2023/2024'")
+    
+    elif nama_table == 't_isi_buku' :
+        unique_select = ['c_KodeBuku', 'c_KodeBab', 'c_Updater', 'c_LastUpdate']
+        query =(f"SELECT DISTINCT {', '.join(unique_select)}\n"
+                f"FROM db_banksoalV2.t_IsiBuku tbs \n")
         
     elif nama_table == 't_isi_bundel_soal' :
         query = (f"SELECT tisb.c_IdSoal , tisb.c_IdBundel , tisb.c_NomorSoal ,tisb.c_Updater , tisb.c_LastUpdate \n"
@@ -61,7 +71,7 @@ def query_select(nama_table) :
         
     elif nama_table == 't_mapel_bab' :
         query = (
-                f"SELECT c_KodeBab, c_IdMataPelajaran, c_Updater, c_LastUpdate, current_timestamp() from t_bab\n"
+                f"SELECT c_KodeBab, c_IdMataPelajaran, c_Updater, c_LastUpdate, current_timestamp() from db_banksoalV2.t_Bab\n"
                 f"where c_IdMataPelajaran IS NOT NULL"
                  )
     
@@ -81,25 +91,38 @@ def query_select(nama_table) :
                  f"JOIN db_banksoalV2.t_PaketSoal USING (c_KodePaket)\n"
                  f"JOIN db_banksoalV2.t_IsiTOB tit USING (c_KodePaket)"
                  f"WHERE tit.c_KodeTOB IN ({', '.join(data_tob)});")
+        if data_tob == [] :
+            query = (f"SELECT DISTINCT {', '.join(unique_select)}\n"
+                    f"FROM db_banksoalV2.t_Soal s\n")
     
     elif nama_table == 't_soal_bab' : 
         query = (f"SELECT tsb.c_IdSoal , tsb.c_KodeBab , tsb.c_Updater , tsb.c_Insert , tsb.c_LastUpdate\n"
                 f"from db_banksoalV2.t_SoalBab tsb \n")
-        
-            
+    
+    elif nama_table == 't_soal_video_soal' :
+        query = (f"SELECT DISTINCT c_IdVideo, c_IdSoal, c_Updater, c_LastUpdate, current_timestamp()\n"
+                f"FROM db_banksoalV2.t_Soal\n"
+                f"where c_IdVideo is not null and c_IdVideo != 0")   
+    
     elif nama_table == 't_teori_bab' :
         query = (
-                f"SELECT *, current_timestamp() FROM db_materi.t_teoribab;"
-                 )
+                f"SELECT *, current_timestamp() FROM db_banksoalV2.t_TeoriBab;"
+                )
+    elif nama_table == 't_teori_bab_video' : 
+        unique_select = ['tvt.c_IdVideo','tvt.c_IdTeoriBab','tvt.c_Updater','tvt.c_LastUpdate','CURRENT_TIMESTAMP']
+        query = (f"SELECT {', '.join(unique_select)}\n"
+                f"FROM db_banksoalV2.t_VideoTeori tvt ")
     
     elif nama_table == 't_video_soal' :
+        unique_select = ['c_IdVideo', 'c_JudulVideo', 'c_Keyword', 'c_Deskripsi', 'c_LinkVideo', 'c_Updater', 'c_LastUpdate', 'current_timestamp()']
         query = (
-                f"SELECT c_IdVideo, c_JudulVideo, c_Keyword, c_Deskripsi, c_LinkVideo, c_Updater, c_LastUpdate, current_timestamp() FROM db_materi.t_videosoal;"
-                 )
+                f"SELECT {', '.join(unique_select)} FROM db_banksoalV2.t_VideoSoal;"
+                )
     
     elif nama_table == 't_video_teori' :
+        unique_select = ['c_IdVideo','c_JudulVideo','c_Deskripsi','c_LinkVideo','c_KodeBab','c_Level','c_Kelengkapan','c_Updater','c_LastUpdate','current_timestamp()']
         query = (
-                f"SELECT c_IdVideo,c_JudulVideo,c_Deskripsi,c_LinkVideo,c_KodeBab,c_Level,c_Kelengkapan,c_Updater,c_LastUpdate,current_timestamp() FROM db_materi.t_videoteori;"
+                f"SELECT {', '.join(unique_select)} FROM db_banksoalV2.t_VideoTeori;"
                  )
     
     elif nama_table == 't_wacana' :
@@ -114,6 +137,9 @@ def query_select(nama_table) :
                  f"JOIN db_banksoalV2.t_PaketSoal USING (c_KodePaket)\n"
                  f"JOIN db_banksoalV2.t_IsiTOB tit USING (c_KodePaket)"
                  f"WHERE tit.c_KodeTOB IN ({', '.join(data_tob)});")
+        if data_tob == [] :
+            query = (f"SELECT DISTINCT tw.*, current_timestamp()\n" 
+                    f"FROM db_banksoalV2.t_Wacana tw\n")
     
     elif nama_table == 't_wacana_soal' :
         query = (f"SELECT c_idsoal, c_idwacana, c_Updater, c_LastUpdate, current_timestamp()\n"
