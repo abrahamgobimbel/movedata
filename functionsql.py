@@ -6,7 +6,7 @@ import db_materi
 import db_materi_teaser 
 import db_produk 
 import db_produk_teaser  
-import db_ptn 
+import db_pt
 import db_report_siswa_empati_mandiri 
 import db_report_siswa_empati_wajib
 import db_report_siswa_goa 
@@ -51,11 +51,24 @@ def data_sql(nama_database, nama_table):
             query = db_materi.query_select(nama_table)
         elif nama_database == 'db_produk' :
             query = db_produk.query_select(nama_table)
+        elif nama_database == 'db_pt' :
+            query = db_pt.query_select(nama_table)   
+        elif nama_database == 'db_report_siswa_empati_mandiri' : 
+            query = db_report_siswa_empati_mandiri.query_select(nama_table)
         elif nama_database == 'db_report_siswa_empati_wajib' :
             query = db_report_siswa_empati_wajib.query_select(nama_table)
         elif nama_database == 'db_report_siswa_goa' :
             query = db_report_siswa_goa.query_select(nama_table)
+        elif nama_database == 'db_report_siswa_koding' :
+            query = db_report_siswa_koding.query_select(nama_table)
+        elif nama_database == 'db_report_siswa_peringkat' : 
+            query = db_report_siswa_peringkat.query_select(nama_table)
+        elif nama_database == 'db_sekolah' :
+            query = db_sekolah.query_select(nama_table)
+        elif nama_database == 'db_user' :
+            query = db_user.query_select(nama_table)
         
+        print (query)
         
         cursor.execute(query)
         results = cursor.fetchall()
