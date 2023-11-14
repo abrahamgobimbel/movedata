@@ -1,6 +1,6 @@
 def nama_database():
     nama_database = ['go', 'kbm', 'materi', 'materi_teaser', 'produk', 'produk_teaser',
-                    'ptn', 'report_siswa_empati_mandiri', 'report_siswa_empati_wajib',
+                    'pt', 'report_siswa_empati_mandiri', 'report_siswa_empati_wajib',
                     'report_siswa_goa', 'report_siswa_irt', 'report_siswa_kuis', 'report_siswa_lateks',
                     'report_siswa_paket_intensif', 'report_siswa_pendalaman_materi', 'report_siswa_peringkat',
                     'report_siswa_presensi', 'report_siswa_racing', 'report_siswa_soref', 'report_siswa_tobk',
