@@ -123,8 +123,9 @@ values = []
 for array in data_sql:
     new_tuple = tuple(function.format_datetime(val) for val in array)
     values.append(new_tuple)
-    
-if len(values) > 10000 :
+if nama_table == 't_soal' :
+    batch_size = 10    
+elif len(values) > 10000 :
     pembagi = round(len(values)/10000)
     batch_size = round(len(values)/pembagi)
 elif len(values) > 1000 :
@@ -222,7 +223,7 @@ elif jenis_table == 'master' :
         update_parts = [f"{col} = EXCLUDED.{col}" for col in kolom_table if col != primary_key]
         return ', '.join(update_parts)    
     for i in range (len(foreign_column)) :
-            sql_statements.append(f"ALTER TABLE {nama_table} DROP CONSTRAINT {nama_table}_{foreign_column[i]}_fkey;")
+            sql_statements.append(f"ALTER TABLE {nama_table} DROP CONSTRAINT IF EXISTS {nama_table}_{foreign_column[i]}_fkey;")
     for i in range(0, len(values), batch_size):
         batch_values = values[i:i + batch_size]
         update_statement = generate_update_statement(kolom_table, primary_key)
