@@ -124,7 +124,9 @@ for array in data_sql:
     new_tuple = tuple(function.format_datetime(val) for val in array)
     values.append(new_tuple)
 if nama_table == 't_soal' :
-    batch_size = 10    
+    batch_size = 1    
+elif nama_table == 't_wacana' : 
+    batch_size = 1
 elif len(values) > 10000 :
     pembagi = round(len(values)/10000)
     batch_size = round(len(values)/pembagi)

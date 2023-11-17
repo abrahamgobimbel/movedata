@@ -244,6 +244,7 @@ def primary_key(nama_table):
         't_target_lulus_goa' : 'c_id_target_lulus',
         #db_report_siswa_peringkat :
         't_pengerjaan_mata_uji' :'c_id',
+        't_peringkat_new' : 'c_id',
         't_jumlah_target' : 'c_id',
         't_target_pengerjaan_siswa' : 'c_id',
         't_target_mapel' : 'c_id',
@@ -357,6 +358,7 @@ def kolom_table(nama_table):
                                 'c_last_update'],
         #db_report_siswa_peringkat
         't_pengerjaan_mata_uji' : ['c_no_register','c_id_kelompok_ujian','c_tanggal','c_id_jenis_produk','c_jumlah_pengerjaan','c_jumlah__benar','c_last_update','c_created_at'],
+        't_peringkat_new' : ['c_id', 'c_no_register', 'c_nama_lengkap', 'c_total', 'c_id_sekolah_kelas', 'c_id_kota', 'c_nama_kota', 'c_id_gedung', 'c_nama_gedung', 'c_tahun_ajaran', 'c_created_at', 'c_last_update', 'c_detil'],
         't_target_mapel' : ['c_id_sekolah_kelas','c_id_kelompok_ujian','c_semester','c_tahun_ajaran','c_persen','c_last_update','c_created_at'],
         't_target_pengerjaan_siswa' : ['c_id_sekolah_kelas','c_target_harian','c_total_target','c_last_update','c_created_at','c_no_register'],
         #db_sekolah
@@ -392,9 +394,7 @@ def foreign_key(nama_table):
         't_presensi_siswa' : ['c_id_rencana', 'c_id_kelas'],
         't_rencana_kerja_kbm' : ['c_id_kegiatan'],
         #db_materi
-        't_bab' : [],
         't_buku_produk' : ['c_id_buku'],
-        't_bundel_soal' : [],
         't_isi_buku' : ['c_id_buku', 'c_kode_bab'],
         't_isi_bundel_soal' : ['c_id_soal', 'c_id_bundel'],
         't_mapel_bab' : ['c_kode_bab'],
@@ -501,10 +501,7 @@ def unique_key(nama_table):
         't_kelas_siswa' : [['c_id_kelas', 'c_no_register']],
         't_presensi_siswa' : [['c_id_rencana', 'c_no_register']],
         #db_materi
-        't_bab': [],
-        't_buku' : [],
         't_buku_produk' : [['c_id_buku', 'c_id_produk']],
-        't_bundelsoal' : [],
         't_isi_buku' :[['c_id_buku','c_kode_bab']],
         't_isi_bundel_soal' : [['c_id_bundel', 'c_id_soal'],['c_id_bundel','c_id_soal','c_nomor_soal'], ['c_id_bundel', 'c_nomor_soal']],
         't_mapel_bab' : [['c_kode_bab', 'c_id_mata_pelajaran']],

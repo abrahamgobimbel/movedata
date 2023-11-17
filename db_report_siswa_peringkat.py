@@ -3,8 +3,19 @@ def query_select(nama_table) :
     if nama_table == 't_pengerjaan_mata_uji' : 
         unique_select = ['tpmu.cNoRegistrasi','tpmu.cIdpelajaran','tpmu.cTanggal','tpmu.cSumber','tpmu.cJumlahPengerjaan','tpmu.cJumlahBenar','CURRENT_TIMESTAMP()','tpmu.cLastUpdate']
         query = (f"SELECT DISTINCT {', '.join(unique_select)}\n"
-                f"FROM db_GOKreasi.t_pengerjaanMataUji tpmu  \n"
-                f"WHERE tpmu.cTanggal > '2023-01-01';")
+                f"FROM db_GOKreasi.t_pengerjaanMataUji tpm")
+    elif nama_table == 't_peringkat_new' :
+        unique_select = ['tpn.c_id', 'tpn.cnoregister', 'tps.c_nama_lengkap', 'tpn.ctotal', 'tps.c_id_sekolah_kelas', 'tps.c_id_kota', 'tk.c_kota', 'tps.c_id_gedung', 'tg.c_nama_gedung', 'tpn.ctahunajaran', 'tpn.clastupdate', 'current_timestamp','tpn.cdetil']
+        query = (f"SELECT DISTINCT {', '.join(unique_select)}\n"
+                f"FROM \n"
+                f"    t_peringkatnew tpn \n"
+                f"JOIN \n"
+                f"    t_produk_siswa tps on tps.c_no_register = tpn.cnoregister\n"
+                f"JOIN \n"
+                f"    t_kota tk on tps.c_id_kota  = tk.c_id_kota\n"
+                f"JOIN \n"
+                f"    t_gedung tg on tg.c_id_gedung = tps.c_id_gedung ;\n"
+                )
     elif nama_table == 't_target_mapel' : 
         unique_select = ['ttm.cIdSekolahKelas','ttm.cIdKelompokUjian','ttm.cSemester','ttm.cTahunAjaran','ttm.cPersen','CURRENT_TIMESTAMP()','CURRENT_TIMESTAMP()']
         query = (f"SELECT DISTINCT {', '.join(unique_select)}\n"
