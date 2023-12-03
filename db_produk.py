@@ -9,12 +9,18 @@ def query_select(nama_table) :
         data_bundling = functioninput.data_input(file_path_bundling)
         query = f"SELECT DISTINCT tb.* FROM db_GOIconsV2.t_Bundling tb WHERE c_IdBundling IN ({', '.join(data_bundling)});"
         if data_bundling == [] :
-            query = f"SELECT DISTINCT tb.* FROM db_GOIconsV2.t_Bundling tb;"
+            query = (f"SELECT tb.*\n"
+                     "FROM db_GOIconsV2.t_Bundling tb\n"
+                     "JOIN db_GOIconsV2.t_ProdukMix tpm on tb.c_IdProdukMix  = tpm.c_IdProdukMix\n"
+                     "JOIN db_GOIconsV2.t_MKT_JenisKelas tmjk on tb.c_IdJenisKelas = tmjk.c_IdJenisKelas and tpm.c_IdJenisKelas = tmjk.c_IdJenisKelas;")
     
     elif nama_table == 't_isi_tob' : 
         file_path_tob = 'db_produk_tob.txt'
-        query = (f"SELECT tit.* \n"
-                f"from t_IsiTOB tit \n")
+        query = (f"SELECT tit.*\n"
+                f"from t_IsiTOB tit \n"
+                "JOIN t_TOB tt on tit.c_KodeTOB = tt.c_KodeTOB\n"
+                "JOIN t_PaketSoal tps on tit.c_KodePaket = tps.c_KodePaket \n"
+                "JOIN db_GOIconsV2.t_MKT_JenisProduk tmjp on tps.c_JenisPaket = tmjp.c_IdJenisProduk")
     
     elif nama_table == 't_isi_produk_mix' :
         query = (f"SELECT tipm.*, CURRENT_TIMESTAMP()\n"
@@ -48,8 +54,9 @@ def query_select(nama_table) :
                  f"JOIN db_banksoalV2.t_IsiTOB tit ON tit.c_KodePaket = tps.c_KodePaket\n"
                  f"WHERE tit.c_KodeTOB IN ({', '.join(data_tob)});") 
         if data_tob == [] :
-            query = (f"SELECT DISTINCT {', '.join(unique_select)}\n"
-                 f"from db_banksoalV2.t_PaketSoal tps \n")
+            query = (f"SELECT {', '.join(unique_select)}\n"
+                 f"from db_banksoalV2.t_PaketSoal tps \n"
+                 "JOIN db_GOIconsV2.t_MKT_JenisProduk tmjp on tps.c_JenisPaket = tmjp.c_IdJenisProduk ")
     
     
     elif nama_table == 't_produk' :
