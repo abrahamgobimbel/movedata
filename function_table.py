@@ -439,13 +439,11 @@ def foreign_key(nama_table):
         't_bundling' : ['c_id_jenis_kelas', 'c_id_produk_mix'],
         't_isi_produk_mix' : ['c_id_produk', 'c_id_produk_mix'],
         't_isi_tob' : ['c_kode_tob', 'c_kode_paket'],
-        't_jenis_kelas' : [],
         't_paket_dan_bundel' : ['c_kode_paket'],
         't_paket_soal' : ['c_id_jenis_produk'],
         't_produk' : ['c_id_jenis_kelas', 'c_id_jenis_produk'],
         't_produk_mix' : ['c_id_jenis_kelas'],
         't_produk_tob' : ['c_kode_tob', 'c_id_produk'],
-        't_tob' : [],
         #db_pt
         't_jurusan' : ['c_id_perguruan_tinggi','c_kode_kelompok_jurusan','c_kode_rumpun_jurusan'],
         't_jurusan_deskripsi' : ['c_id_jurusan'],

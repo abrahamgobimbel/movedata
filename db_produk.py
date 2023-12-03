@@ -18,7 +18,12 @@ def query_select(nama_table) :
     
     elif nama_table == 't_isi_produk_mix' :
         query = (f"SELECT tipm.*, CURRENT_TIMESTAMP()\n"
-                 f"FROM db_GOIconsV2.t_IsiProdukMix tipm\n")
+                 f"FROM db_GOIconsV2.t_IsiProdukMix tipm\n"
+                "JOIN db_GOIconsV2.t_Produk tp on tipm.c_IdProduk = tp.c_IdProduk\n"
+                "JOIN db_GOIconsV2.t_ProdukMix tpm on tipm.c_IdProdukMix - tpm.c_IdProdukMix\n"
+                "JOIN db_GOIconsV2.t_MKT_JenisKelas tmjk on tp.c_IdJenisKelas  = tmjk.c_IdJenisKelas and tpm.c_IdJenisKelas = tmjk.c_IdJenisKelas \n"
+                "JOIN db_GOIconsV2.t_MKT_JenisProduk tmjp on tp.c_IdJenisProduk = tmjp.c_IdJenisProduk;" 
+                )
     
     elif nama_table == 't_jenis_kelas' : 
         query = f"SELECT * FROM db_GOIconsV2.t_MKT_JenisKelas;"
@@ -67,7 +72,10 @@ def query_select(nama_table) :
                     f"WHERE tispm.c_IdProdukMix IN ({', '.join(data_produk_mix)});")
             if data_produk_mix == [] : 
                 query = (f"SELECT DISTINCT tp.*\n"
-                        f"FROM db_GOIconsV2.t_Produk tp\n")
+                        f"FROM db_GOIconsV2.t_Produk tp\n"
+                        "JOIN db_GOIconsV2.t_MKT_JenisProduk tmjp on tp.c_IdJenisProduk = tmjp.c_IdJenisProduk \n"
+                        "JOIN db_GOIconsV2.t_MKT_JenisKelas tmjk on tp.c_IdJenisKelas = tmjk.c_IdJenisKelas ;"
+                        )
                 
     elif nama_table == 't_produk_mix' :
         unique_select = ['tpm.c_IdProdukMix' , 'tpm.c_NamaProdukMix' , 'tpm.c_IdJenisKelas' , 'tpm.c_IdKurikulum' , 
@@ -88,7 +96,8 @@ def query_select(nama_table) :
                     f"WHERE tb.c_IdBundling IN ({', '.join(data_bundling)});")
             if data_bundling == [] :
                 query = (f"SELECT {', '.join(unique_select)}\n"
-                    f"FROM db_GOIconsV2.t_ProdukMix tpm\n")
+                    f"FROM db_GOIconsV2.t_ProdukMix tpm\n"
+                    "JOIN db_GOIconsV2.t_MKT_JenisKelas tmjk on tpm.c_IdJenisKelas = tmjk.c_IdJenisKelas;")
 
         
         

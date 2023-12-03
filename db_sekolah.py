@@ -11,8 +11,10 @@ def query_select(nama_table) :
         f"from db_banksoalV2.t_Kurikulum tk  ")
     
     elif nama_table == 't_mapel_kelompok_ujian' :
-        query = (f"SELECT *\n"
-                f"FROM db_banksoalV2.t_MapelUji tmu ")
+        query = (f"SELECT tmu.*\n"
+                f"FROM db_banksoalV2.t_MapelUji tmu\n"
+                "join db_banksoalV2.t_MataPelajaran tmp on tmu.c_IdMataPelajaran = tmp.c_IdMataPelajaran \n"
+                "join db_banksoalV2.t_KelompokUjian tku on tmu.c_IdKelompokUjian = tku.c_IdKelompokUjian \n")
     elif nama_table == 't_mata_pelajaran' :
         query = (f"SELECT *, CURRENT_TIMESTAMP()\n" 
                 f"FROM db_banksoalV2.t_MataPelajaran tmp  ")
