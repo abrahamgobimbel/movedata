@@ -1,6 +1,15 @@
 def query_select(nama_table) :
     
-    if nama_table == 't_bah' :
+    if nama_table == 't_anggota_tst' :
+        query = (f"SELECT c_IdPermintaan, c_NIS,\n"
+                f"CASE WHEN c_IsKetua = 'Y' THEN true ELSE false END AS is_ketua_boolean,\n"
+                f"CASE when c_IsHadir = 'Y' THEN true else false end as is_hadir_boolean,\n"
+	            f"c_idrealisasi, c_jamdatang, c_jampulang, c_updater, c_lastupdate, CURRENT_TIMESTAMP()\n"
+                f"FROM db_IsianDPPV3.t_AnggotaTST tat\n"
+                f"where c_lastupdate BETWEEN DATE_SUB(CURRENT_TIMESTAMP(), INTERVAL 1 MONTH)\n"
+                f"AND DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL 1 MONTH);")
+    
+    elif nama_table == 't_bah' :
         query = (f"SELECT *\n"
                 f"FROM db_banksoalV2.t_BAH  tb \n"  
                 f"WHERE tb.c_TahunAjaran = '2023/2024'")
@@ -35,17 +44,16 @@ def query_select(nama_table) :
     elif nama_table == 't_permintaan_tst' :
         query = (f"SELECT *\n"
                 f"FROM db_IsianDPPV3.t_PermintaanTST tpt\n"
-                f"WHERE c_tanggalpermintaan > '2023-01-01';")
+                f"WHERE c_tanggalpermintaan > DATE_SUB(CURDATE(), INTERVAL 1 MONTH)\n"
+                f"AND c_TanggalPermintaan <= DATE_ADD(CURDATE(), INTERVAL 1 MONTH);")
     
     elif nama_table == 't_presensi_siswa' :
-        query = f"SELECT p.* FROM db_kbm.t_presensisiswa p JOIN (select distinct c_IdRencana, c_NoRegistrasi from t_presensisiswa) id ON id.c_IdRencana = p.c_idrencana and id.c_NoRegistrasi=p.c_noregistrasi WHERE p.c_tanggal >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK) AND p.c_tanggal <= DATE_ADD(CURDATE(), INTERVAL 2 WEEK);"
+        query = (f"SELECT p.* FROM db_GOIconsV2.t_PresensiSiswa p\n"
+                f"JOIN (select distinct c_IdRencana, c_NoRegistrasi from db_GOIconsV2.t_PresensiSiswa) id\n"
+                f"ON id.c_IdRencana = p.c_idrencana and id.c_NoRegistrasi=p.c_noregistrasi\n"
+                f"WHERE p.c_tanggal >= DATE_SUB(CURDATE(), INTERVAL 1 WEEK)\n" 
+                f"AND p.c_tanggal <= DATE_ADD(CURDATE(), INTERVAL 1 WEEK);")
     
-    elif nama_table == 't_rencana_kerja' :
-        query = (f"SELECT *\n"
-                f"FROM db_IsianDPPV3.t_RencanaKerja trk \n" 
-                f"WHERE c_TahunAjaran = '2023/2024'\n"
-                f"and c_JamAwal > '2023-01-01 00:00:00'")
-        
     elif nama_table == 't_rencana_kerja_kbm' :
-        query = f"SELECT r.c_IdRencana, r.c_IdGedungPelaksana, r.c_NIK, r.c_JamAwal, r.c_JamAkhir, CASE WHEN CAST(r.c_idkegiatan AS SIGNED) = 20101 THEN 1 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20102 THEN 2 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20103 THEN 3 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20104 THEN 4 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20105 THEN 5 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20106 THEN 6 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20107 THEN 7 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20108 THEN 8 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20109 THEN 9 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20110 THEN 10 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20111 THEN 11 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20112 THEN 12 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20113 THEN 13 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20114 THEN 14 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20115 THEN 15 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20116 THEN 16 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20117 THEN 17 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20118 THEN 18 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20119 THEN 19 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20120 THEN 20 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20201 THEN 21 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20202 THEN 22 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20203 THEN 23 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20205 THEN 25 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20206 THEN 26 WHEN CAST(r.c_idkegiatan AS SIGNED) = 20207 THEN 27 ELSE 0 END AS c_idkegiatan, r.c_Info1 , r.c_Info2, r.c_Info3, r.c_TahunAjaran, r.c_StatusRencana, r.c_UpdaterRencana, r.c_LastUpdate, JSON_UNQUOTE(r.c_Keterangan->'$.RENCANA') AS c_rencana, JSON_UNQUOTE(r.c_Keterangan->'$.REALISASI') AS c_realisasi, JSON_UNQUOTE(r.c_Keterangan->'$.siswahadir') AS c_siswahadir FROM db_kbm.t_rencanakerja r WHERE (c_idkegiatan LIKE '0201%' OR c_idkegiatan LIKE '0202%') AND r.c_JamAwal >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK) AND r.c_JamAwal <= DATE_ADD(CURDATE(), INTERVAL 2 WEEK);"
+        query = f"SELECT r.c_IdRencana, r.c_IdGedungPelaksana, r.c_NIK, r.c_JamAwal, r.c_JamAkhir,  r.c_idkegiatan, r.c_Info1 , r.c_Info2, r.c_Info3, r.c_TahunAjaran, r.c_StatusRencana, r.c_UpdaterRencana, r.c_LastUpdate, JSON_UNQUOTE(r.c_Keterangan->'$.RENCANA') AS c_rencana, JSON_UNQUOTE(r.c_Keterangan->'$.REALISASI') AS c_realisasi, JSON_UNQUOTE(r.c_Keterangan->'$.siswahadir') AS c_siswahadir FROM db_IsianDPPV3.t_RencanaKerja r WHERE (c_idkegiatan LIKE '0201%' OR c_idkegiatan LIKE '0202%') AND r.c_JamAwal >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK) AND r.c_JamAwal <= DATE_ADD(CURDATE(), INTERVAL 2 WEEK);"
     return query

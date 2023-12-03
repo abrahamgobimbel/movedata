@@ -59,6 +59,8 @@ def data_sql(nama_database, nama_table):
             query = db_report_siswa_empati_wajib.query_select(nama_table)
         elif nama_database == 'db_report_siswa_goa' :
             query = db_report_siswa_goa.query_select(nama_table)
+        elif nama_database == 'db_report_siswa_irt' :
+            query = db_report_siswa_irt.query_select(nama_table)
         elif nama_database == 'db_report_siswa_koding' :
             query = db_report_siswa_koding.query_select(nama_table)
         elif nama_database == 'db_report_siswa_peringkat' : 

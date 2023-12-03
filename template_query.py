@@ -3,6 +3,8 @@ import os
 import functionsql
 import function_table
 import datetime
+import functioninput
+
 
 
 def clear_terminal():
@@ -124,9 +126,9 @@ for array in data_sql:
     new_tuple = tuple(function.format_datetime(val) for val in array)
     values.append(new_tuple)
 if nama_table == 't_soal' :
-    batch_size = 1    
-elif nama_table == 't_wacana' : 
-    batch_size = 1
+    batch_size = 25
+elif nama_table == 't_wacana' :
+    batch_size = 25
 elif len(values) > 10000 :
     pembagi = round(len(values)/10000)
     batch_size = round(len(values)/pembagi)
@@ -219,11 +221,14 @@ if jenis_table == 'penghubung' :
         sql_statements.append(f"DELETE FROM {nama_table} WHERE NOT EXISTS (SELECT 1 FROM {foreign_table[i]} WHERE {nama_table}.{foreign_column[i]} = {foreign_table[i]}.{foreign_column[i]});")
     for i in range (len(foreign_column)) :
         sql_statements.append(f"ALTER TABLE {nama_table} ADD CONSTRAINT {nama_table}_{foreign_column[i]}_fkey FOREIGN KEY ({foreign_column[i]})  REFERENCES {foreign_table[i]} ({foreign_column[i]});" )
+    if nama_table == 't_isi_bundel_soal' :
+        sql_statements.append("UPDATE t_bundel_soal AS tbs SET c_jumlah_soal = (SELECT COUNT(*) FROM t_isi_bundel_soal WHERE c_id_bundel = tbs.c_id_bundel);")
 
 elif jenis_table == 'master' :
     def generate_update_statement(kolom_table, primary_key):
         update_parts = [f"{col} = EXCLUDED.{col}" for col in kolom_table if col != primary_key]
         return ', '.join(update_parts)    
+    sql_statements.append("SET client_encoding = 'UTF8';")
     for i in range (len(foreign_column)) :
             sql_statements.append(f"ALTER TABLE {nama_table} DROP CONSTRAINT IF EXISTS {nama_table}_{foreign_column[i]}_fkey;")
     for i in range(0, len(values), batch_size):
@@ -234,7 +239,10 @@ elif jenis_table == 'master' :
             batch_sql_query.append(f"{value}")
         batch_sql_query = ', '.join(batch_sql_query)
         sql_query = f"SELECT DISTINCT {primary_key} FROM {nama_table}"
-        sql_query_ = f"INSERT INTO {nama_table} ({', '.join(kolom_table)}) VALUES {batch_sql_query} ON CONFLICT ({primary_key}) DO UPDATE SET {update_statement};"
+        if nama_table == 't_siswa' : 
+            sql_query_ = f"INSERT INTO {nama_table} ({', '.join(kolom_table)}) VALUES {batch_sql_query} ON CONFLICT ({primary_key}) DO NOTHING;"
+        else : 
+            sql_query_ = f"INSERT INTO {nama_table} ({', '.join(kolom_table)}) VALUES {batch_sql_query} ON CONFLICT ({primary_key}) DO UPDATE SET {update_statement};"
         sql_statements.append(sql_query_)
     if len(foreign_column) > 0 :
         for i in range (len(foreign_column)):
@@ -246,11 +254,21 @@ elif jenis_table == 'master' :
         sql_statements.append(f"UPDATE t_soal SET c_soal = REPLACE(c_soal, '&quotes;', '''') WHERE c_soal LIKE '%&quotes;%';")
     if nama_table == 't_wacana' :
         sql_statements.append(f"UPDATE t_wacana SET c_Text= REPLACE(c_Text, '&quotes;', '''') WHERE c_Text LIKE '%&quotes;%';")
+    if nama_table == 't_teori_bab' :
+        sql_statements.append(f"UPDATE t_teori_bab SET c_uraian= REPLACE(c_uraian, '&quotes;', '''') WHERE c_uraian LIKE '%&quotes;%';")
+    if nama_table == 't_bab' :
+        sql_statements.append("UPDATE t_bab SET c_upline = REVERSE(SUBSTRING(REVERSE(c_kode_bab), POSITION('.' IN REVERSE(c_kode_bab)) + 1));")
+        sql_statements.append("UPDATE t_bab SET c_upline = CONCAT(c_upline, '.00') WHERE LENGTH(c_upline) = 2;")
+    file_path_tob = 'db_produk_kode_tob.txt'
+    data_tob = functioninput.data_input(file_path_tob)
+    if nama_table == 't_tob' : 
+        sql_statements.append(f"UPDATE t_tob SET c_tanggal_awal  = c_tanggal_awal  - INTERVAL '7 hours', c_tanggal_kedaluwarsa = c_tanggal_kedaluwarsa  - INTERVAL '7 hours' WHERE c_kode_tob IN ({', '.join(data_tob)});")
+    if nama_table == 't_permintaan_tst' :
+        sql_statements.append("ALTER TABLE public.t_permintaan_tst ADD CONSTRAINT t_permintaan_tst_un UNIQUE (c_id_rencana);")
 new_sql_file = f'{nama_database}_{nama_table}.sql'
 
 with open(new_sql_file, 'w', encoding='utf-8') as new_file:
-    modified_statements = [statement.replace("\\'", "").replace("\\", "").replace("'NULL'","NULL") for statement in sql_statements]
-    
+    modified_statements = [statement.replace('""' ,'" "').replace("\\'", "").replace("\\", "").replace("'NULL'","NULL") for statement in sql_statements]
     encoded_statements = []
     for statement in modified_statements:
         try:
