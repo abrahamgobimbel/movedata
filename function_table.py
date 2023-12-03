@@ -431,9 +431,7 @@ def foreign_key(nama_table):
         't_soal_video_soal' : ['c_id_soal','c_id_video'],
         't_teori_bab' : ['c_kode_bab'],
         't_teori_bab_video' : ['c_id_teori_bab', 'c_id_video'],
-        't_video_soal' : [],
         't_video_teori' : ['c_kode_bab'],
-        't_wacana' : [],
         't_wacana_soal' :['c_id_soal','c_id_wacana'],
         #db_produk
         't_bundling' : ['c_id_jenis_kelas', 'c_id_produk_mix'],

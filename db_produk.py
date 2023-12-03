@@ -25,10 +25,6 @@ def query_select(nama_table) :
     elif nama_table == 't_isi_produk_mix' :
         query = (f"SELECT tipm.*, CURRENT_TIMESTAMP()\n"
                  f"FROM db_GOIconsV2.t_IsiProdukMix tipm\n"
-                "JOIN db_GOIconsV2.t_Produk tp on tipm.c_IdProduk = tp.c_IdProduk\n"
-                "JOIN db_GOIconsV2.t_ProdukMix tpm on tipm.c_IdProdukMix - tpm.c_IdProdukMix\n"
-                "JOIN db_GOIconsV2.t_MKT_JenisKelas tmjk on tp.c_IdJenisKelas  = tmjk.c_IdJenisKelas and tpm.c_IdJenisKelas = tmjk.c_IdJenisKelas \n"
-                "JOIN db_GOIconsV2.t_MKT_JenisProduk tmjp on tp.c_IdJenisProduk = tmjp.c_IdJenisProduk;" 
                 )
     
     elif nama_table == 't_jenis_kelas' : 
@@ -41,9 +37,7 @@ def query_select(nama_table) :
     
     elif nama_table == 't_paket_dan_bundel' :
         query = (f"SELECT tpdb.c_IdBundel , tpdb.c_KodePaket , tpdb.c_Urutan , tpdb.c_Updater , tpdb.c_LastUpdate\n" 
-                f"from t_PaketDanBundel tpdb \n"
-                "JOIN t_PaketSoal tps on tps.c_KodePaket = tpdb.c_KodePaket\n"
-                "JOIN db_GOIconsV2.t_MKT_JenisProduk tmjp on tps.c_JenisPaket = tmjp.c_IdJenisProduk ")
+                f"from t_PaketDanBundel tpdb \n")
     
     elif nama_table == 't_paket_soal' :
         unique_select = ["tps.c_KodePaket", "tps.c_Deskripsi" , "tps.c_TahunAjaran" ,"tps.c_TanggalBerlaku", 
