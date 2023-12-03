@@ -41,7 +41,9 @@ def query_select(nama_table) :
     
     elif nama_table == 't_paket_dan_bundel' :
         query = (f"SELECT tpdb.c_IdBundel , tpdb.c_KodePaket , tpdb.c_Urutan , tpdb.c_Updater , tpdb.c_LastUpdate\n" 
-                f"from t_PaketDanBundel tpdb \n")
+                f"from t_PaketDanBundel tpdb \n"
+                "JOIN t_PaketSoal tps on tps.c_KodePaket = tpdb.c_KodePaket\n"
+                "JOIN db_GOIconsV2.t_MKT_JenisProduk tmjp on tps.c_JenisPaket = tmjp.c_IdJenisProduk ")
     
     elif nama_table == 't_paket_soal' :
         unique_select = ["tps.c_KodePaket", "tps.c_Deskripsi" , "tps.c_TahunAjaran" ,"tps.c_TanggalBerlaku", 
@@ -111,7 +113,12 @@ def query_select(nama_table) :
     elif nama_table == 't_produk_tob' :
         file_path_tob ='db_produk_kode_tob.txt'
         data_tob = functioninput.data_input(file_path_tob)
-        query = (f"SELECT tpt.* FROM t_ProdukTOB tpt\n")
+        query = (f"SELECT tpt.*\n"
+                 "FROM t_ProdukTOB tpt\n"
+                 "JOIN t_TOB tt on tpt.c_KodeTOB = tt.c_KodeTOB \n"
+                 "JOIN db_GOIconsV2.t_Produk tp on tpt.c_IdKomponenProduk = tp.c_IdProduk \n"
+                 "JOIN db_GOIconsV2.t_MKT_JenisProduk tmjp on tp.c_IdJenisProduk = tmjp.c_IdJenisProduk \n"
+                 "JOIN db_GOIconsV2.t_MKT_JenisKelas tmjk on tp.c_IdJenisKelas = tmjk.c_IdJenisKelas")
     
     
     elif nama_table == 't_tob' : 
