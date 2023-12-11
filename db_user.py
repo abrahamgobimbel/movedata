@@ -3,7 +3,17 @@ import functioninput
 
 def query_select(nama_table) :
     
-    if nama_table == 't_mapel_pilihan_siswa' :
+    if nama_table == 't_karyawan' : 
+        unique_select = [
+            'cNIK', 'cNamaLengkap', 'cEmail', 'cPilihan', 'cSiapa',
+            'null as cIdDevice', 'cNomorHP', 'cStatus', 'cCreated',' null as cLastLogin'
+        ]
+        query = (f"SELECT DISTINCT {', '.join(unique_select)}\n"
+                 f"FROM db_GOKreasi.t_registerpengajar tr\n"
+                 f"JOIN (SELECT DISTINCT max(Id) as Id\n"
+                 f"FROM db_GOKreasi.t_registerpengajar tr2\n"
+                 f"where tr2.cNIK is not null group by cNomorHP) sq on tr.Id = sq.Id")
+    elif nama_table == 't_mapel_pilihan_siswa' :
         query = (f"SELECT DISTINCT \n"
                 f"cNoRegister , cIdKelompokUjian \n"
                 f"from db_GOKreasi.t_mapelpilihan tm ")

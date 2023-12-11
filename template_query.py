@@ -126,9 +126,11 @@ for array in data_sql:
     new_tuple = tuple(function.format_datetime(val) for val in array)
     values.append(new_tuple)
 if nama_table == 't_soal' :
-    batch_size = 25
-elif nama_table == 't_wacana' :
-    batch_size = 25
+    batch_size = 100
+elif nama_table == 't_siswa' :
+    batch_size = 100
+elif nama_table == 't_jurusan' :
+    batch_size = 5
 elif len(values) > 10000 :
     pembagi = round(len(values)/10000)
     batch_size = round(len(values)/pembagi)
@@ -177,8 +179,6 @@ if jenis_table == 'penghubung' :
     sql_statements.append(f"CREATE TABLE {nama_table_baru} AS SELECT * FROM {nama_table} WHERE false;")
     sql_statements.append(f"ALTER TABLE {nama_table_baru} DROP COLUMN {primary_key};")
     sql_statements.append(f"alter table {nama_table_baru} ADD {primary_key} serial;")
-    if nama_table != 't_isi_bundel_soal' and nama_table != 't_paket_dan_bundel' and nama_table != 't_paket_dan_bundel_materi':
-        sql_statements.append(f"insert into {nama_table_baru} {unique_select};")
     if nama_table == 't_isi_bundel_soal' :
         sql_statements.append(f"ALTER TABLE {nama_table_baru} ADD CONSTRAINT unique_{nama_table_baru} UNIQUE (c_id_bundel, c_id_soal);")
     elif nama_table == 't_paket_dan_bundel' or nama_table =='t_paket_dan_bundel_materi' :
@@ -223,7 +223,8 @@ if jenis_table == 'penghubung' :
         sql_statements.append(f"ALTER TABLE {nama_table} ADD CONSTRAINT {nama_table}_{foreign_column[i]}_fkey FOREIGN KEY ({foreign_column[i]})  REFERENCES {foreign_table[i]} ({foreign_column[i]});" )
     if nama_table == 't_isi_bundel_soal' :
         sql_statements.append("UPDATE t_bundel_soal AS tbs SET c_jumlah_soal = (SELECT COUNT(*) FROM t_isi_bundel_soal WHERE c_id_bundel = tbs.c_id_bundel);")
-
+    
+    
 elif jenis_table == 'master' :
     def generate_update_statement(kolom_table, primary_key):
         update_parts = [f"{col} = EXCLUDED.{col}" for col in kolom_table if col != primary_key]
@@ -240,7 +241,7 @@ elif jenis_table == 'master' :
         batch_sql_query = ', '.join(batch_sql_query)
         sql_query = f"SELECT DISTINCT {primary_key} FROM {nama_table}"
         if nama_table == 't_siswa' : 
-            sql_query_ = f"INSERT INTO {nama_table} ({', '.join(kolom_table)}) VALUES {batch_sql_query} ON CONFLICT ({primary_key}) DO NOTHING;"
+            sql_query_ = f"INSERT INTO {nama_table} ({', '.join(kolom_table)}) VALUES {batch_sql_query} ON CONFLICT ({primary_key}) DO UPDATE SET c_nama_lengkap = EXCLUDED.c_nama_lengkap , c_email = EXCLUDED.c_email, c_nomor_hp = EXCLUDED.c_nomor_hp;"
         else : 
             sql_query_ = f"INSERT INTO {nama_table} ({', '.join(kolom_table)}) VALUES {batch_sql_query} ON CONFLICT ({primary_key}) DO UPDATE SET {update_statement};"
         sql_statements.append(sql_query_)
@@ -258,11 +259,15 @@ elif jenis_table == 'master' :
         sql_statements.append(f"UPDATE t_teori_bab SET c_uraian= REPLACE(c_uraian, '&quotes;', '''') WHERE c_uraian LIKE '%&quotes;%';")
     if nama_table == 't_bab' :
         sql_statements.append("UPDATE t_bab SET c_upline = REVERSE(SUBSTRING(REVERSE(c_kode_bab), POSITION('.' IN REVERSE(c_kode_bab)) + 1));")
-        sql_statements.append("UPDATE t_bab SET c_upline = CONCAT(c_upline, '.00') WHERE LENGTH(c_upline) = 2;")
+        sql_statements.append("UPDATE t_bab SET c_upline = CONCAT(c_upline, '.00') WHERE LENGTH(c_upline) = 2;") 
     file_path_tob = 'db_produk_kode_tob.txt'
     data_tob = functioninput.data_input(file_path_tob)
     if nama_table == 't_tob' : 
-        sql_statements.append(f"UPDATE t_tob SET c_tanggal_awal  = c_tanggal_awal  - INTERVAL '7 hours', c_tanggal_kedaluwarsa = c_tanggal_kedaluwarsa  - INTERVAL '7 hours' WHERE c_kode_tob IN ({', '.join(data_tob)});")
+        if len(data_tob) > 0 :
+            sql_statements.append(f"UPDATE t_tob SET c_tanggal_awal  = c_tanggal_awal  - INTERVAL '7 hours', c_tanggal_kedaluwarsa = c_tanggal_kedaluwarsa  - INTERVAL '7 hours' WHERE c_kode_tob IN ({', '.join(data_tob)});")
+        else : 
+            sql_statements.append(f"UPDATE t_tob SET c_tanggal_awal  = c_tanggal_awal  - INTERVAL '7 hours', c_tanggal_kedaluwarsa = c_tanggal_kedaluwarsa  - INTERVAL '7 hours';")
+
     if nama_table == 't_permintaan_tst' :
         sql_statements.append("ALTER TABLE public.t_permintaan_tst ADD CONSTRAINT t_permintaan_tst_un UNIQUE (c_id_rencana);")
 new_sql_file = f'{nama_database}_{nama_table}.sql'
